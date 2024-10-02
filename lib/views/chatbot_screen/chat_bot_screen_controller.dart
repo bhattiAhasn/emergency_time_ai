@@ -45,7 +45,8 @@ class ChatController extends GetxController {
       // POST request to submit the message
       var response = await http.post(Uri.parse(replicateApiUrl),
           headers: headers, body: body);
-
+      print('data<<<<<<<<<<<${response.body}');
+      print('statusCode<<<<<<<<<<<$replicateApiKey');
       if (response.statusCode == 201) {
         var responseData = jsonDecode(response.body);
         var predictionId = responseData['id']; // Capture the `id` field
