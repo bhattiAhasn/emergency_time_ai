@@ -27,4 +27,17 @@ class AppIcons {
   static const String womenHairs = "$imageDir/women_hair.png";
   static const String womenCrown = "$imageDir/women_crown.png";
   static const String womenTatoos = "$imageDir/women_tatoos.png";
+
+  static const String backIcon= "$imageDir/back_icon.png";
+
+  // setting icons
+  static const String settingNotificationSettings = "$imageDir/set_notifications.png";
+  static const String settingChangePassword = "$imageDir/set_password.png";
+  static const String settingShareApp = "$imageDir/set_share.png";
+  static const String settingRateApp = "$imageDir/set_rate.png";
+  static const String settingTermsAndConditions = "$imageDir/set_terms.png";
+  static const String settingPrivacyPolicy= "$imageDir/set_policy.png";
+  static const String settingLogout= "$imageDir/set_logout.png";
+
+
 }
