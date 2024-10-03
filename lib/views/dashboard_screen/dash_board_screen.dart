@@ -1,6 +1,8 @@
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/views/chatbot_screen/chat_bot_screen.dart';
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
+import 'package:emergency_time/views/profile/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/profile/settings_screen/settings_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 
 import '../../routes/app_routes.dart';
@@ -23,7 +25,10 @@ class DashboardScreen extends StatelessWidget {
                 IconButton(
                   icon:
                       const Icon(Icons.notifications_none, color: Colors.black),
-                  onPressed: () {},
+                  onPressed: () {
+                   // Get.to(() => SettingsScreen());
+                    Get.to(() => AppointmentScreen());
+                  },
                 ),
               ],
             ),

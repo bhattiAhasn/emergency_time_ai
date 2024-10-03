@@ -14,4 +14,10 @@ class Routes {
   static const notificationScreen = '/notificationScreen';
   static const chatBotScreen = '/chatBotScreen';
   static const hospitalLocatorScreen = '/hospitalLocatorScreen';
+  // setting
+  static const settingsScreen = '/SettingsScreen';
+  static const appointmentScreen = '/AppointmentScreen';
+
+
+
 }

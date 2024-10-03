@@ -23,6 +23,9 @@ class AppAssets {
 
   static const String visitDr1 = "$imageDir/visit_dr1.png";
   static const String visitDr2 = "$imageDir/visit_dr2.png";
+  static const String visitDr3 = "$imageDir/dr3.png";
+  static const String visitDr4 = "$imageDir/dr4.png";
+
 
   static const String hospitalLocator = "$imageDir/hospital_locator.png";
   static const String bmiCalculator = "$imageDir/bmi_calculator.png";

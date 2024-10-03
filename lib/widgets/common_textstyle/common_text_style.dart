@@ -28,6 +28,7 @@ class CommonTextStyle {
       fontSize: 12,
       fontWeight: FontWeight.w300,
       fontFamily: 'Nexa');
+
   static TextStyle appBarText = const TextStyle(
       color: Colors.black,
       letterSpacing: 0.4,
@@ -204,4 +205,57 @@ class CommonTextStyle {
       fontSize: 14,
       fontWeight: FontWeight.w700,
       fontFamily: 'Nexa');
+
+  static TextStyle settingTitleText = const TextStyle(
+    color: Colors.black,
+    letterSpacing: 0.4,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
+  static TextStyle appBarTitle = const TextStyle(
+      color: Colors.black,
+      letterSpacing: 0.4,
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+  static TextStyle titleHeading = const TextStyle(
+    color: Colors.black,
+    letterSpacing: 0.4,
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+   static TextStyle titleSubheading = const TextStyle(
+    color: AppColors.subtitleText,
+    letterSpacing: 0.4,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
+   static TextStyle titleReviews = const TextStyle(
+    color: AppColors.reviewTextColor,
+    letterSpacing: 0.4,
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
+  static TextStyle greyText = const TextStyle(
+    color: AppColors.subtitleText,
+    letterSpacing: 0.4,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+    backgroundColor: AppColors.backgroundTextColor,
+  );
+
+
+
+
+
+
 }
