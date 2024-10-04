@@ -1,6 +1,3 @@
-import 'package:emergency_time/widgets/common_textstyle/common_text_style.dart';
-
-import '../../../../constants/app_assets/app_icon.dart';
 import '../../../../utils/libraries/app_libraries.dart';
 
 class SettingTile extends StatelessWidget {
@@ -20,7 +17,7 @@ class SettingTile extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
           letterSpacing: 0.4,
           fontSize: 16,
@@ -29,8 +26,7 @@ class SettingTile extends StatelessWidget {
         ),
         // CommonTextStyle.settingTitleText,
       ),
-      onTap: (){
-      },
+      onTap: () {},
     );
   }
 }

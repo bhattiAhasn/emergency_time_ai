@@ -1,7 +1,6 @@
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/views/profile/appointment_screen/local_widget/appointment_tile.dart';
-import 'package:flutter/cupertino.dart';
 
 import '../../../constants/app_assets/app_icon.dart';
 import '../../../widgets/common_textstyle/common_text_style.dart';
@@ -17,8 +16,8 @@ class AppointmentScreen extends StatelessWidget {
           child: Image.asset(
             AppIcons.backIcon,
           ),
-          onTap: (){
-            Navigator.pop(context);
+          onTap: () {
+            Get.back();
           },
         ),
         title: Text(
@@ -26,7 +25,7 @@ class AppointmentScreen extends StatelessWidget {
           style: CommonTextStyle.appBarTitle,
         ),
       ),
-      body:  ListView(
+      body: ListView(
         children: [
           Container(
             height: 32.0, // Set the height to 32px
@@ -39,7 +38,7 @@ class AppointmentScreen extends StatelessWidget {
               ),
             ),
           ),
-          AppointmentTile(
+          const AppointmentTile(
             doctorName: 'Dr. Adaora Azubuike',
             image: AppAssets.visitDr1,
             specialization: 'Cardiologist',
@@ -48,7 +47,7 @@ class AppointmentScreen extends StatelessWidget {
             rate: "4.5",
             reviews: '56 Reviews',
           ),
-          AppointmentTile(
+          const AppointmentTile(
             doctorName: 'Tua Manuera',
             image: AppAssets.visitDr4,
             specialization: 'Paediatrics',
@@ -68,7 +67,7 @@ class AppointmentScreen extends StatelessWidget {
               ),
             ),
           ),
-          AppointmentTile(
+          const AppointmentTile(
             doctorName: 'Dr. Adaora Azubuike',
             image: AppAssets.visitDr3,
             specialization: 'Cardiologist',
@@ -77,7 +76,7 @@ class AppointmentScreen extends StatelessWidget {
             rate: "4.5",
             reviews: '56 Reviews',
           ),
-          AppointmentTile(
+          const AppointmentTile(
             doctorName: 'Tua Manuera',
             image: AppAssets.visitDr2,
             specialization: 'Paediatrics',
@@ -86,7 +85,6 @@ class AppointmentScreen extends StatelessWidget {
             rate: "4.5",
             reviews: '56 Reviews',
           ),
-
         ],
       ),
     );

@@ -21,13 +21,16 @@ class DashboardScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(AppAssets.drawerPic, height: 24),
+                InkWell(
+                    onTap: () {
+                      Get.to(() => const SettingsScreen());
+                    },
+                    child: Image.asset(AppAssets.drawerPic, height: 24)),
                 IconButton(
                   icon:
                       const Icon(Icons.notifications_none, color: Colors.black),
                   onPressed: () {
-                   // Get.to(() => SettingsScreen());
-                    Get.to(() => AppointmentScreen());
+                    Get.to(() => const AppointmentScreen());
                   },
                 ),
               ],
