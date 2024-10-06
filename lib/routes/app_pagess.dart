@@ -1,7 +1,9 @@
+import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
 import 'package:emergency_time/views/hospital_locator/hospital_locator.dart';
-import 'package:emergency_time/views/profile/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/invite_friend_screen/invite_friend_screen.dart';
 import 'package:emergency_time/views/profile/profile_screen.dart';
-import 'package:emergency_time/views/profile/settings_screen/settings_screen.dart';
+import 'package:emergency_time/views/settings_screen/settings_screen.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import '../middlewears/auth/auth_middlewear.dart';
 import '../views/auth/forgot_password/email_verify/emial_verify_screen.dart';
@@ -97,9 +99,20 @@ class AppPages {
       name: Routes.settingsScreen,
       page: () => const SettingsScreen(),
     ),
+
     GetPage(
       name: Routes.appointmentScreen,
       page: () => const AppointmentScreen(),
+    ),
+
+    GetPage(
+      name: Routes.inviteFriendScreen,
+      page: () => const InviteFriendScreen(),
+    ),
+
+    GetPage(
+      name: Routes.feedbackScreen,
+      page: () => const FeedbackScreen(),
     ),
   ];
 }

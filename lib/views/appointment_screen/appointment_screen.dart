@@ -1,9 +1,10 @@
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
-import 'package:emergency_time/views/profile/appointment_screen/local_widget/appointment_tile.dart';
+
 
 import '../../../constants/app_assets/app_icon.dart';
 import '../../../widgets/common_textstyle/common_text_style.dart';
+import 'local_widget/appointment_tile.dart';
 
 class AppointmentScreen extends StatelessWidget {
   const AppointmentScreen({super.key});

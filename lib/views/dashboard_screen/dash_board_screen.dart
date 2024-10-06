@@ -1,8 +1,11 @@
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/views/chatbot_screen/chat_bot_screen.dart';
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
-import 'package:emergency_time/views/profile/appointment_screen/appointment_screen.dart';
-import 'package:emergency_time/views/profile/settings_screen/settings_screen.dart';
+import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
+import 'package:emergency_time/views/invite_friend_screen/invite_friend_screen.dart';
+import 'package:emergency_time/views/notification_screen/notification_screen.dart';
+import 'package:emergency_time/views/settings_screen/settings_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 
 import '../../routes/app_routes.dart';
@@ -30,7 +33,10 @@ class DashboardScreen extends StatelessWidget {
                   icon:
                       const Icon(Icons.notifications_none, color: Colors.black),
                   onPressed: () {
-                    Get.to(() => const AppointmentScreen());
+                    Get.to(() => const FeedbackScreen());
+                    // Get.to(() => const NotificationScreen());
+                    // Get.to(() => const InviteFriendScreen());
+                    // Get.to(() => const AppointmentScreen());
                   },
                 ),
               ],

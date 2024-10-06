@@ -253,8 +253,56 @@ class CommonTextStyle {
     backgroundColor: AppColors.backgroundTextColor,
   );
 
+  static TextStyle whiteTitle = const TextStyle(
+      color: Colors.white,
+      letterSpacing: 0.4,
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+ static TextStyle whiteSubTitle = const TextStyle(
+      color: Colors.white,
+      letterSpacing: 0.4,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
 
 
+ static TextStyle lightGreySubTitle = const TextStyle(
+      color: AppColors.lightGreyTextColor,
+      letterSpacing: 0.4,
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+  static TextStyle greySubTitle = const TextStyle(
+      color: AppColors.lightGreyTextColor,
+      letterSpacing: 0.4,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+  static TextStyle bold24Title = const TextStyle(
+      color: Colors.black,
+      letterSpacing: 0.4,
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+  static TextStyle bold16Text = const TextStyle(
+    color: AppColors.subtitleText,
+    letterSpacing: 0.4,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
+  static TextStyle white16Title = const TextStyle(
+      color: Colors.white,
+      letterSpacing: 0.4,
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
 
 
 

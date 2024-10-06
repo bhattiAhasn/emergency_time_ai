@@ -1,8 +1,8 @@
 import 'package:emergency_time/constants/app_assets/app_icon.dart';
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
-import 'package:emergency_time/views/profile/appointment_screen/appointment_screen.dart';
-import 'package:emergency_time/views/profile/settings_screen/setting_screen_controller.dart';
-import 'package:emergency_time/views/profile/settings_screen/local_widget/setting_tile.dart';
+import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/settings_screen/setting_screen_controller.dart';
+import 'package:emergency_time/views/settings_screen/local_widget/setting_tile.dart';
 import 'package:emergency_time/widgets/common_scaffold/common_scaffold.dart';
 import 'package:emergency_time/widgets/common_textstyle/common_text_style.dart';
 import 'package:flutter/cupertino.dart';
