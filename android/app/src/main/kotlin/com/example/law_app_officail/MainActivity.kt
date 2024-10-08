@@ -1,4 +1,4 @@
-package com.example.law_app_officail
+package com.example.emergency.time
 
 import io.flutter.embedding.android.FlutterActivity
 
