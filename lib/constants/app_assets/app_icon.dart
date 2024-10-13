@@ -19,6 +19,10 @@ class AppIcons {
   static const String beardIcon = "$imageDir/beard_icon.png";
   static const String sunglasses = "$imageDir/sunglasses.png";
   static const String expandIcon = "$imageDir/expand_icon.png";
+  static const String greenStartIcon = "$imageDir/green_star.png";
+  static const String greyStartIcon = "$imageDir/grey_star.png";
+
+
 
   //women editing
   static const String womenCasualWear = "$imageDir/women_casual.png";
@@ -38,6 +42,14 @@ class AppIcons {
   static const String settingTermsAndConditions = "$imageDir/set_terms.png";
   static const String settingPrivacyPolicy= "$imageDir/set_policy.png";
   static const String settingLogout= "$imageDir/set_logout.png";
+
+  // social media icons
+  static const String facebookIcon= "$imageDir/facebook.png";
+  static const String whatsappIcon= "$imageDir/whatsapp.png";
+  static const String messengerIcon= "$imageDir/messenger.png";
+  static const String linkedinIcon= "$imageDir/linkedin.png";
+  static const String twitterIcon2= "$imageDir/twitter.png";
+
 
 
 }

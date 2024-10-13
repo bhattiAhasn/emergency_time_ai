@@ -34,6 +34,8 @@ class AppColors {
   static const Color subtitleText = Color(0xff506D85);
   static const Color reviewTextColor = Color(0xff8BA6C1);
   static const Color backgroundTextColor = Color(0xffF5F8FA);
+  static const Color lightGreyTextColor = Color(0xffDDE5ED);
+
 
 
 
