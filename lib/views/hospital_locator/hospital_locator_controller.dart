@@ -1,77 +1,83 @@
+import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class HospitalLocatorController extends GetxController {
-  // Default center for Pakistan (Islamabad)
-  final LatLng center =
-      const LatLng(30.3753, 69.3451); // Approximate center of Pakistan
-
-  // Observable list of markers
+  final LatLng center = const LatLng(30.3753, 69.3451); // Center of Pakistan
   final RxSet<Marker> markers = <Marker>{}.obs;
-
-  // Search query observable
   var searchQuery = ''.obs;
-
-  // Map controller
   GoogleMapController? mapController;
+
+  // Replace with your actual Google API key
+  final String googleApiKey = 'AIzaSyA3IbVbaLHbanjoqpetg4pWRTEtTnaZnak';
 
   @override
   void onInit() {
     super.onInit();
-    // Add markers for Pakistan hospitals
     _loadPakistanHospitals();
   }
 
-  void _loadPakistanHospitals() {
-    markers.addAll({
-      const Marker(
-        markerId: MarkerId('shaukat_khanum'),
-        position: LatLng(31.4832, 74.2713),
-        infoWindow: InfoWindow(
-          title: 'Shaukat Khanum Memorial Hospital',
-          snippet: 'Lahore',
-        ),
-      ),
-      const Marker(
-        markerId: MarkerId('aga_khan'),
-        position: LatLng(24.8615, 67.0728),
-        infoWindow: InfoWindow(
-          title: 'Aga Khan University Hospital',
-          snippet: 'Karachi',
-        ),
-      ),
-      const Marker(
-        markerId: MarkerId('cmh_rawalpindi'),
-        position: LatLng(33.5987, 73.0441),
-        infoWindow: InfoWindow(
-          title: 'Combined Military Hospital (CMH)',
-          snippet: 'Rawalpindi',
-        ),
-      ),
-      const Marker(
-        markerId: MarkerId('pims'),
-        position: LatLng(33.6844, 73.0479),
-        infoWindow: InfoWindow(
-          title: 'PIMS Hospital',
-          snippet: 'Islamabad',
-        ),
-      ),
-      // Add more hospitals as needed
-    });
-  }
-
-  // Update map controller when map is created
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
-  // Update the search query
-  void updateSearchQuery(String query) {
-    searchQuery.value = query;
-    // Filter hospitals based on search query or make API calls
+  // Loads default markers
+  void _loadPakistanHospitals() {
+    markers.addAll({
+      // Add default hospitals (as you did)
+    });
   }
 
-  // Clear the search input
+  // Method to search hospitals in a selected city
+  Future<void> searchHospitalsInCity(String city) async {
+    final String url =
+        'https://maps.googleapis.com/maps/api/place/textsearch/json?query=hospitals+in+$city&key=$googleApiKey';
+
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final results = data['results'] as List;
+
+      // Clear existing markers
+      markers.clear();
+
+      // Add new markers based on search results
+      for (var place in results) {
+        final lat = place['geometry']['location']['lat'];
+        final lng = place['geometry']['location']['lng'];
+        final name = place['name'];
+        final address = place['formatted_address'];
+
+        markers.add(
+          Marker(
+            markerId: MarkerId(name),
+            position: LatLng(lat, lng),
+            infoWindow: InfoWindow(
+              title: name,
+              snippet: address,
+            ),
+          ),
+        );
+      }
+
+      // Update map center to the first result
+      if (results.isNotEmpty && mapController != null) {
+        final firstResult = results.first;
+        final lat = firstResult['geometry']['location']['lat'];
+        final lng = firstResult['geometry']['location']['lng'];
+
+        mapController!.animateCamera(
+          CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0),
+        );
+      }
+    } else {
+      // Handle API error
+      print('Error fetching hospitals: ${response.body}');
+    }
+  }
+
+  // Clears the search query
   void clearSearch() {
     searchQuery.value = '';
   }
