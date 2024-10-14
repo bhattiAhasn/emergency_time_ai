@@ -1,25 +1,124 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
 class HospitalLocatorController extends GetxController {
   final LatLng center = const LatLng(30.3753, 69.3451); // Center of Pakistan
   final RxSet<Marker> markers = <Marker>{}.obs;
   var searchQuery = ''.obs;
+  var citySuggestions = <String>[].obs; // Store city suggestions
   GoogleMapController? mapController;
+  Position? currentPosition;
 
   // Replace with your actual Google API key
   final String googleApiKey = 'AIzaSyA3IbVbaLHbanjoqpetg4pWRTEtTnaZnak';
+
+  // List of cities in Pakistan
+  final List<String> pakistanCities = [
+    'Karachi',
+    'Lahore',
+    'Islamabad',
+    'Faisalabad',
+    'Rawalpindi',
+    'Multan',
+    'Peshawar',
+    'Hyderabad',
+    'Gujranwala',
+    'Quetta',
+    'Sialkot',
+    'Bahawalpur',
+    'Gujrat',
+    'Mardan',
+    'Sargodha',
+    'Sheikhupura',
+    'Larkana',
+    'Rahim Yar Khan',
+    'Okara',
+    'Chiniot',
+    'Kasur',
+    'Dera Ghazi Khan',
+    'Mianwali',
+    'Nawabshah',
+    'Jhelum',
+    'Turbat',
+    'Kohat',
+    'Sukkur',
+    'Zhob',
+    'Faisalabad',
+  ];
+
+  // List of cities in the UK
+  final List<String> ukCities = [
+    'London',
+    'Birmingham',
+    'Manchester',
+    'Glasgow',
+    'Liverpool',
+    'Leeds',
+    'Sheffield',
+    'Bristol',
+    'Newcastle upon Tyne',
+    'Nottingham',
+    'Southampton',
+    'Leicester',
+    'Coventry',
+    'Bradford',
+    'Cardiff',
+    'Belfast',
+    'Brighton',
+    'Plymouth',
+    'Stoke-on-Trent',
+    'Wolverhampton',
+    'Derby',
+    'Luton',
+    'Swansea',
+    'Reading',
+    'Aberdeen',
+    'Dundee',
+    'Oxford',
+    'Cambridge',
+    'York',
+    'Gloucester',
+  ];
 
   @override
   void onInit() {
     super.onInit();
     _loadPakistanHospitals();
+    _determinePosition();
   }
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  // Get current user location
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    currentPosition = await Geolocator.getCurrentPosition();
   }
 
   // Loads default markers
@@ -48,6 +147,13 @@ class HospitalLocatorController extends GetxController {
         final lng = place['geometry']['location']['lng'];
         final name = place['name'];
         final address = place['formatted_address'];
+        final openingHours = place['opening_hours'] != null
+            ? place['opening_hours']['weekday_text']
+            : 'No hours available';
+        final distance = currentPosition != null
+            ? _calculateDistance(
+                currentPosition!.latitude, currentPosition!.longitude, lat, lng)
+            : 'Distance unavailable';
 
         markers.add(
           Marker(
@@ -55,7 +161,7 @@ class HospitalLocatorController extends GetxController {
             position: LatLng(lat, lng),
             infoWindow: InfoWindow(
               title: name,
-              snippet: address,
+              snippet: '$address\nDistance: $distance\nHours: $openingHours',
             ),
           ),
         );
@@ -75,6 +181,32 @@ class HospitalLocatorController extends GetxController {
       // Handle API error
       print('Error fetching hospitals: ${response.body}');
     }
+  }
+
+  // Calculate distance between two coordinates (in km)
+  String _calculateDistance(
+      double startLat, double startLng, double endLat, double endLng) {
+    final distanceInMeters =
+        Geolocator.distanceBetween(startLat, startLng, endLat, endLng);
+    final distanceInKm = (distanceInMeters / 1000).toStringAsFixed(2);
+    return '$distanceInKm km';
+  }
+
+  // Update city suggestions based on the search query
+  void updateCitySuggestions() {
+    if (searchQuery.value.isEmpty) {
+      citySuggestions.clear();
+      return;
+    }
+
+    // Combine both city lists for suggestions
+    final allCities = [...pakistanCities, ...ukCities];
+
+    // Filter cities based on search query
+    citySuggestions.value = allCities
+        .where((city) =>
+            city.toLowerCase().contains(searchQuery.value.toLowerCase()))
+        .toList();
   }
 
   // Clears the search query
