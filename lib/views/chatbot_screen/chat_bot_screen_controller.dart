@@ -13,8 +13,8 @@ class ChatController extends GetxController {
   var isLoading = false.obs; // Observable for loading state
   final String replicateApiUrl =
       'https://api.replicate.com/v1/models/meta/meta-llama-3.1-405b-instruct/predictions';
-  final String replicateApiKey = dotenv.env['REPLICATE_API_KEY'] ??
-      ''; // Move this to secure storage in production
+  final String replicateApiKey = dotenv.env['REPLICATE_API_KEY'] ?? '';
+  // Move this to secure storage in production
 
   Future<void> sendMessage(String message) async {
     messages.add({"sender": "user", "message": message});

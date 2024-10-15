@@ -9,138 +9,130 @@ import 'package:emergency_time/views/settings_screen/settings_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 
 import '../../routes/app_routes.dart';
+import 'local_widgets/drawer.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
 
+  static final GlobalKey<ScaffoldState> scaffoldKey =
+      GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                    onTap: () {
-                      Get.to(() => const SettingsScreen());
-                    },
-                    child: Image.asset(AppAssets.drawerPic, height: 24)),
-                IconButton(
-                  icon:
-                      const Icon(Icons.notifications_none, color: Colors.black),
-                  onPressed: () {
-                    Get.to(() => const FeedbackScreen());
-                    // Get.to(() => const NotificationScreen());
-                    // Get.to(() => const InviteFriendScreen());
-                    // Get.to(() => const AppointmentScreen());
-                  },
-                ),
-              ],
-            ),
-            const MyText(
-              'Welcome back!',
-              fontWeight: FontWeight.w400,
-              fontSize: 14,
-              color: Color(0xff14BFFF),
-            ),
-            const MyText(
-              'What are you looking for?',
-              fontWeight: FontWeight.w400,
-              fontSize: 24,
-              color: Colors.black,
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search doctors, medicines, hospitals...',
-                  hintStyle: const TextStyle(color: Color(0xff506D85)),
-                  prefixIcon:
-                      const Icon(Icons.search, color: Color(0xff506D85)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: BorderSide.none,
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    borderSide: const BorderSide(color: Colors.transparent),
-                  ),
-                  filled: true,
-                ),
-              ),
-            ),
-            GridView.count(
-              crossAxisCount: 2,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              children: [
-                _buildCategoryCard(Image.asset(AppAssets.doctorDashboard,
-                    height: 96, width: 106)),
-                _buildCategoryCard(Image.asset(AppAssets.diagonosticDas,
-                    height: 96, width: 106)),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.hospitalLocatorScreen);
-                  },
-                  child: _buildCategoryCard(Image.asset(
-                      AppAssets.searchHospital,
-                      height: 96,
-                      width: 106)),
-                ),
-                _buildCategoryCard(Image.asset(AppAssets.orderMedicine,
-                    height: 96, width: 106)),
-                InkWell(
-                  onTap: () {
-                    Get.to(() =>
-                        const ChatBotScreen()); // Navigate to your desired page or widget
-                  },
-                  child: _buildCategoryCard(
-                    Image.asset(
-                      AppAssets.aIDashboard,
-                      height: 96,
-                      width: 106,
-                    ),
-                  ),
-                ),
-                _buildCategoryCard(Image.asset(AppAssets.diagonosticDas,
-                    height: 96, width: 106)),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const _SectionTitle(
-              'Recently Visited Doctors',
-            ),
-            Row(
-              children: [
-                _buildDoctorCard(
-                    'John Doe', 'Cardiologist', AppAssets.visitDr1),
-                _buildDoctorCard('Diana Prince', 'Dentist', AppAssets.visitDr2),
-              ],
-            ),
-            const SizedBox(height: 20),
-            buildSpecialistDoctorsSection(),
-            const SizedBox(height: 20),
-            buildOtherServices(),
-            const SizedBox(height: 20),
-            buildLabTestSection(),
-            const SizedBox(height: 20),
-            const _SectionTitle('Health Articles'),
-            buildHealthArticleCard('Benefits of regular health checkup'),
-            buildHealthArticleCard('How to maintain your family’s health'),
-          ],
+    return Scaffold(
+      key: scaffoldKey,
+      drawer: const CustomDrawer(),
+      backgroundColor: Colors.white,
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        children: [
+          const SizedBox(height: 15),
+          _buildHeader(context),
+          const MyText(
+            'Welcome back!',
+            fontWeight: FontWeight.w400,
+            fontSize: 14,
+            color: Color(0xff14BFFF),
+          ),
+          const MyText(
+            'What are you looking for?',
+            fontWeight: FontWeight.w400,
+            fontSize: 24,
+            color: Colors.black,
+          ),
+          const SizedBox(height: 10),
+          _buildSearchField(),
+          _buildCategoryGrid(),
+          const SizedBox(height: 20),
+          const _SectionTitle('Recently Visited Doctors'),
+          _buildRecentlyVisitedDoctors(),
+          const SizedBox(height: 20),
+          buildSpecialistDoctorsSection(),
+          const SizedBox(height: 20),
+          buildOtherServices(),
+          const SizedBox(height: 20),
+          buildLabTestSection(),
+          const SizedBox(height: 20),
+          const _SectionTitle('Health Articles'),
+          buildHealthArticleCard('Benefits of regular health checkup'),
+          buildHealthArticleCard('How to maintain your family’s health'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InkWell(
+          onTap: () {
+            scaffoldKey.currentState
+                ?.openDrawer(); // Correctly opens the drawer
+          },
+          child: Image.asset(AppAssets.drawerPic, height: 24),
+        ),
+        IconButton(
+          icon: const Icon(Icons.notifications_none, color: Colors.black),
+          onPressed: () {
+            Get.to(() => const NotificationScreen());
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSearchField() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
+      child: TextField(
+        decoration: InputDecoration(
+          hintText: 'Search doctors, medicines, hospitals...',
+          hintStyle: const TextStyle(color: Color(0xff506D85)),
+          prefixIcon: const Icon(Icons.search, color: Color(0xff506D85)),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: Colors.transparent),
+          ),
+          filled: true,
         ),
       ),
+    );
+  }
+
+  Widget _buildCategoryGrid() {
+    return GridView.count(
+      crossAxisCount: 2,
+      crossAxisSpacing: 10.0,
+      mainAxisSpacing: 10.0,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        _buildCategoryCard(Image.asset(AppAssets.doctorDashboard)),
+        _buildCategoryCard(Image.asset(AppAssets.diagonosticDas)),
+        InkWell(
+          onTap: () {
+            Get.toNamed(Routes.hospitalLocatorScreen);
+          },
+          child: _buildCategoryCard(Image.asset(AppAssets.searchHospital)),
+        ),
+        _buildCategoryCard(Image.asset(AppAssets.orderMedicine)),
+        InkWell(
+          onTap: () {
+            Get.to(() => const ChatBotScreen());
+          },
+          child: _buildCategoryCard(Image.asset(AppAssets.aIDashboard)),
+        ),
+        _buildCategoryCard(Image.asset(AppAssets.diagonosticDas)),
+      ],
     );
   }
 
@@ -164,8 +156,7 @@ class DashboardScreen extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundImage:
-                    AssetImage(imagePath), // Use the imagePath parameter
+                backgroundImage: AssetImage(imagePath),
               ),
               const SizedBox(height: 10),
               MyText(
@@ -185,6 +176,15 @@ class DashboardScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildRecentlyVisitedDoctors() {
+    return Row(
+      children: [
+        _buildDoctorCard('John Doe', 'Cardiologist', AppAssets.visitDr1),
+        _buildDoctorCard('Diana Prince', 'Dentist', AppAssets.visitDr2),
+      ],
     );
   }
 
@@ -230,11 +230,7 @@ class DashboardScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              Image.asset(
-                imagePath,
-                height: 72,
-                width: 72,
-              ), // Use the Image widget passed as a parameter directly
+              Image.asset(imagePath, height: 72, width: 72),
               const SizedBox(height: 10),
               MyText(
                 title,
@@ -274,14 +270,9 @@ class DashboardScreen extends StatelessWidget {
   Widget buildServiceTile(String image, String title) {
     return Container(
       height: 60,
-      // Set the height of each tile
       margin: const EdgeInsets.only(bottom: 10.0),
-      // Optional: space between tiles
       child: ListTile(
-        leading: Image.asset(
-          image,
-          height: 30,
-        ),
+        leading: Image.asset(image, height: 30),
         title: MyText(
           title,
           fontSize: 16,
@@ -291,51 +282,70 @@ class DashboardScreen extends StatelessWidget {
         trailing: const Icon(
           Icons.arrow_forward_ios,
           size: 10,
-          color: Color(0xff8BA6C1),
+          color: Color(0xff8BA6BB),
         ),
-        tileColor: AppColors.white, // Optional: background color for each tile
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+      ),
+    );
+  }
+
+  Widget buildLabTestSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const MyText(
+          'Lab Test',
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
         ),
-        onTap: () {
-          // Add your onTap logic here if needed
-        },
+        const SizedBox(height: 10),
+        InkWell(
+          onTap: () {
+            // Get.toNamed(Routes.labTestScreen);
+          },
+          child: const Card(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: MyText(
+                'Get Lab Test at Home',
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildHealthArticleCard(String title) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: MyText(
+          title,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Colors.black,
+        ),
       ),
     );
   }
 }
 
-Widget buildLabTestSection() {
-  return Image.asset(
-    AppAssets.labTestPackage,
-    height: 335,
-  );
-}
-
-Widget buildHealthArticleCard(String title) {
-  return Card(
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(title, style: const TextStyle(fontSize: 16)),
-    ),
-  );
-}
-
 class _SectionTitle extends StatelessWidget {
   final String title;
 
-  const _SectionTitle(this.title);
+  const _SectionTitle(this.title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20.0),
-      child: MyText(
-        title,
-        fontSize: 24,
-        fontWeight: FontWeight.w400,
-        color: Colors.black,
-      ),
+    return MyText(
+      title,
+      fontSize: 18,
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
     );
   }
 }

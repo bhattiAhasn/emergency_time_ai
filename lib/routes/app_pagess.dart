@@ -88,7 +88,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.hospitalLocatorScreen,
-      page: () => const HospitalLocatorScreen(),
+      page: () => HospitalLocatorScreen(),
     ),
     //
     // //profile page screen

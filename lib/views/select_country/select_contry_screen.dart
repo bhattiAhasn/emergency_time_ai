@@ -1,4 +1,5 @@
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
+import 'package:emergency_time/views/dashboard_screen/dash_board_screen.dart';
 import 'package:emergency_time/views/select_country/select_city/select_city.dart';
 import 'package:emergency_time/views/select_country/select_country_controller.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
@@ -50,7 +51,7 @@ class SelectCountryScreen extends StatelessWidget {
                             AppAssets.pakistanLogo, // Path to your asset image
                         countryName: 'Pakistan',
                         onTap: () {
-                          controller.selectCountry('Pakistan');
+                          Get.to(() => const DashboardScreen());
                         },
                       ),
                       CountryOption(
@@ -58,8 +59,9 @@ class SelectCountryScreen extends StatelessWidget {
                             .unitedStateLogo, // Path to your asset image
                         countryName: 'United States',
                         onTap: () {
-                          Get.to(() => const SelectCityScreen());
-                          controller.selectCountry('United States');
+                          Get.to(() => const DashboardScreen());
+                          // Get.to(() => const SelectCityScreen());
+                          // controller.selectCountry('United States');
                         },
                       ),
                     ],

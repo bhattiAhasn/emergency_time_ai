@@ -1,16 +1,13 @@
 class ApiData {
-  //All API's call end points
-  //Base url
   static const String baseUrl =
       "http://openpolicy1.canadacentral.cloudapp.azure.com:8000";
-  //Auth call end points
 
   static const String login = "$baseUrl/login";
-  //Register user
 
   static const String profile = "$baseUrl/profile";
 
   static const String getPolls = "$baseUrl/polls/";
+
   //Register user
   static const String registerUser = "$baseUrl/register/";
 
@@ -59,10 +56,13 @@ class ApiData {
 
   //forgot Password call end points
   static const String forgotPassword = "$baseUrl/forgot_password/";
+
   //verify OTP user
   static const String verifyOtp = "$baseUrl/otp_verification";
+
   //reset password
   static const String resetPassword = "$baseUrl/reset_password/";
+
   //reset password
   static const String logout = "$baseUrl/logout";
 

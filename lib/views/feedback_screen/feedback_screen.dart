@@ -1,10 +1,8 @@
 import 'package:emergency_time/views/feedback_screen/feedback_controller.dart';
 import 'package:emergency_time/widgets/common_spaces/common_spaces.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import '../../constants/app_assets/app_icon.dart';
 import '../../utils/libraries/app_libraries.dart';
-import '../../widgets/common_buttons/common_button.dart';
 import '../../widgets/common_textstyle/common_text_style.dart';
 import 'local_widget/input_textfield.dart';
 
@@ -34,7 +32,8 @@ class FeedbackScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Expanded(child: Column(
+            Expanded(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -67,23 +66,23 @@ class FeedbackScreen extends StatelessWidget {
                       },
                     ),
                     Obx(() => Text(
-                      feedbackController.rating.value.toString(),
-                      style: CommonTextStyle.bold24Title,
-                    )),
+                          feedbackController.rating.value.toString(),
+                          style: CommonTextStyle.bold24Title,
+                        )),
                   ],
                 ),
                 CommonSpaces.spaceVertical10,
                 Obx(() => Text(
-                  feedbackController.getFeedbackText(),
-                  style: CommonTextStyle.settingTitleText,
-                )),
+                      feedbackController.getFeedbackText(),
+                      style: CommonTextStyle.settingTitleText,
+                    )),
                 CommonSpaces.spaceVertical40,
                 Text(
                   "Your message ( optional )",
                   style: CommonTextStyle.settingTitleText,
                 ),
                 CommonSpaces.spaceVertical10,
-                InputTextfield(),
+                const InputTextfield(),
               ],
             )),
             Container(
@@ -94,8 +93,10 @@ class FeedbackScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
-                child: Text("Submit",
-                style: CommonTextStyle.white16Title,),
+                child: Text(
+                  "Submit",
+                  style: CommonTextStyle.white16Title,
+                ),
               ),
             ).marginOnly(bottom: 14),
           ],
