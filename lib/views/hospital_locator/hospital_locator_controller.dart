@@ -1,19 +1,24 @@
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 
+import '../../utils/libraries/app_libraries.dart';
+
 class HospitalLocatorController extends GetxController {
   final LatLng center = const LatLng(30.3753, 69.3451); // Center of Pakistan
   final RxSet<Marker> markers = <Marker>{}.obs;
-  var searchQuery = ''.obs;
-  var citySuggestions = <String>[].obs; // Store city suggestions
+
+  RxList<String> citySuggestions = <String>[].obs; // Store city suggestions
   GoogleMapController? mapController;
   Position? currentPosition;
+  RxString searchQuery = ''.obs;
+  TextEditingController cityName = TextEditingController();
 
   // Replace with your actual Google API key
-  final String googleApiKey = 'AIzaSyA3IbVbaLHbanjoqpetg4pWRTEtTnaZnak';
+  final String googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
 
   // List of cities in Pakistan
   final List<String> pakistanCities = [
@@ -130,6 +135,11 @@ class HospitalLocatorController extends GetxController {
 
   // Method to search hospitals in a selected city
   Future<void> searchHospitalsInCity(String city) async {
+    if (kDebugMode) {
+      print('City>>>>>>>>>$city');
+    }
+
+    update();
     final String url =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?query=hospitals+in+$city&key=$googleApiKey';
 
@@ -212,5 +222,12 @@ class HospitalLocatorController extends GetxController {
   // Clears the search query
   void clearSearch() {
     searchQuery.value = '';
+  }
+
+  @override
+  void onClose() {
+    // Dispose of the TextEditingController when the controller is removed from memory
+    cityName.dispose();
+    super.onClose();
   }
 }

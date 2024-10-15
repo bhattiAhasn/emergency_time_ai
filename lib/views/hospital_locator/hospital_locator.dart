@@ -1,3 +1,4 @@
+import 'package:emergency_time/constants/app_assets/app_assets.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,11 +17,17 @@ class HospitalLocatorScreen extends StatelessWidget {
           appBar: AppBar(
             title: const MyText(
               'Hospital Locator',
-              color: Colors.black, // Ensuring black text color for the title
+              color: Colors.black,
             ),
-            backgroundColor: Colors.white, // Optional: Set background color
+            actions: [
+              Image.asset(
+                AppAssets.threeLines,
+                height: 30,
+              ).marginOnly(right: 15)
+            ],
+            backgroundColor: Colors.white,
             iconTheme: const IconThemeData(
-              color: Colors.black, // Set the back button color to black
+              color: Colors.black,
             ),
           ),
           body: Stack(
@@ -57,41 +64,43 @@ class HospitalLocatorScreen extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            child: TextField(
-                              style: const TextStyle(
-                                color: Colors
-                                    .black, // Ensure black text color for input text
-                              ),
-                              onChanged: (value) {
-                                controller.searchQuery.value = value;
-                                controller
-                                    .updateCitySuggestions(); // Update suggestions
-                              },
-                              onSubmitted: (value) {
-                                if (value.isNotEmpty) {
-                                  controller.searchHospitalsInCity(value);
-                                }
-                              },
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: Colors.black, // Black hint text color
-                                ),
-                                hintText: 'Enter city name (e.g. London)',
-                                border: InputBorder.none,
-                              ),
+                              child: TextField(
+                            controller: controller.cityName,
+                            style: const TextStyle(
+                              color: Colors.black,
                             ),
-                          ),
+
+                            // controller: TextEditingController(
+                            //   text: controller.searchQuery.value,
+                            // ),
+
+                            // Bind the text field controller to searchQuery
+
+                            onChanged: (value) {
+                              controller.searchQuery.value = value;
+                              controller.updateCitySuggestions();
+                            },
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                controller.searchHospitalsInCity(value);
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                              hintText: 'Enter city name (e.g. London)',
+                              border: InputBorder.none,
+                            ),
+                          )),
                           IconButton(
                             icon: const Icon(
-                              Icons.search,
-                              color: Colors
-                                  .black, // Ensure black color for the search icon
+                              Icons.clear,
+                              color: Colors.black,
                             ),
                             onPressed: () {
-                              if (controller.searchQuery.value.isNotEmpty) {
-                                controller.searchHospitalsInCity(
-                                    controller.searchQuery.value);
-                              }
+                              controller.cityName
+                                  .clear(); // Call the clear method
                             },
                           ),
                         ],
@@ -110,10 +119,17 @@ class HospitalLocatorScreen extends StatelessWidget {
                                       color: Colors.black,
                                     ),
                                     onTap: () {
+                                      // Update search query with selected city
                                       controller.searchQuery.value =
                                           controller.citySuggestions[index];
+                                      // Search hospitals for the selected city
                                       controller.searchHospitalsInCity(
                                           controller.citySuggestions[index]);
+                                      // Clear suggestions after selection
+                                      controller.citySuggestions.clear();
+                                      controller.cityName.text =
+                                          controller.searchQuery.value;
+                                      controller.update();
                                     },
                                   );
                                 },

@@ -1,6 +1,6 @@
 import 'package:emergency_time/constants/app_assets/app_icon.dart';
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
-import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
+import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
 import 'package:emergency_time/views/settings_screen/setting_screen_controller.dart';
 import 'package:emergency_time/views/settings_screen/local_widget/setting_tile.dart';
 import 'package:emergency_time/widgets/common_scaffold/common_scaffold.dart';
@@ -12,7 +12,6 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     SettingScreenController settingScreenController =
         Get.put(SettingScreenController());
 
@@ -20,9 +19,9 @@ class SettingsScreen extends StatelessWidget {
       appBar: AppBar(
         leading: InkWell(
           child: Image.asset(
-              AppIcons.backIcon,
+            AppIcons.backIcon,
           ),
-          onTap: (){
+          onTap: () {
             Navigator.pop(context);
           },
         ),
@@ -61,9 +60,12 @@ class SettingsScreen extends StatelessWidget {
             leading: AppIcons.settingShareApp,
             title: 'Share Our App',
           ),
-          const SettingTile(
+          SettingTile(
             leading: AppIcons.settingRateApp,
             title: 'Rate Our App',
+            onTap: () {
+              Get.to(() => const FeedbackScreen());
+            },
           ),
           const SettingTile(
             leading: AppIcons.settingTermsAndConditions,
