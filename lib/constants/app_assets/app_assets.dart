@@ -33,5 +33,6 @@ class AppAssets {
   static const String shareWithFriendsImage = "$imageDir/share-friends.png";
   static const String noNotificationsImage = "$imageDir/no_notifications.png";
 
+
   static const String threeLines = "$imageDir/threelines.png";
 }

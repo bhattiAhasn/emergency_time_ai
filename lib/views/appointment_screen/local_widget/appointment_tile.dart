@@ -14,7 +14,6 @@ class AppointmentTile extends StatelessWidget {
 
   const AppointmentTile({super.key, required this.doctorName, required this.image, required this.specialization, required this.details, required this.time, required this.rate, required this.reviews});
 
-
   @override
   Widget build(BuildContext context) {
     return ListTile(

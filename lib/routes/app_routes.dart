@@ -19,6 +19,11 @@ class Routes {
   static const appointmentScreen = '/AppointmentScreen';
   static const inviteFriendScreen = '/InviteFriendScreen';
   static const feedbackScreen = '/FeedbackScreen';
+  static const doctorListingScreen = '/DoctorListingScreen';
+  static const bookAppointmentScreen = '/BookAppointmentScreen';
+  static const doctorDetailsScreen = '/DoctorDetailsScreen';
+
+
 
 
 

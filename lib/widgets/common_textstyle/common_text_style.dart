@@ -192,6 +192,7 @@ class CommonTextStyle {
       fontSize: 18,
       fontWeight: FontWeight.bold,
       fontFamily: 'Nexa');
+
   static TextStyle authEmailNormalText = const TextStyle(
       color: Color(0xff7B7B7B),
       letterSpacing: 0.4,
@@ -228,6 +229,7 @@ class CommonTextStyle {
     fontWeight: FontWeight.w400,
     fontFamily: 'Gilroy',
   );
+
    static TextStyle titleSubheading = const TextStyle(
     color: AppColors.subtitleText,
     letterSpacing: 0.4,
@@ -235,6 +237,15 @@ class CommonTextStyle {
     fontWeight: FontWeight.w400,
     fontFamily: 'Gilroy',
   );
+
+   static TextStyle titleBlack12Subheading = const TextStyle(
+    color: Colors.black,
+    letterSpacing: 0.4,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
 
    static TextStyle titleReviews = const TextStyle(
     color: AppColors.reviewTextColor,
@@ -252,6 +263,15 @@ class CommonTextStyle {
     fontFamily: 'Gilroy',
     backgroundColor: AppColors.backgroundTextColor,
   );
+    static TextStyle grey12Text = const TextStyle(
+    color: AppColors.subtitleText,
+    letterSpacing: 0.4,
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    fontFamily: 'Gilroy',
+  );
+
+
 
   static TextStyle whiteTitle = const TextStyle(
       color: Colors.white,
@@ -282,6 +302,15 @@ class CommonTextStyle {
       fontWeight: FontWeight.w400,
       fontFamily: 'Gilroy');
 
+   static TextStyle greenSubTitle = const TextStyle(
+      color: AppColors.rateGreen,
+      letterSpacing: 0.4,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+
+
   static TextStyle bold24Title = const TextStyle(
       color: Colors.black,
       letterSpacing: 0.4,
@@ -301,6 +330,22 @@ class CommonTextStyle {
       color: Colors.white,
       letterSpacing: 0.4,
       fontSize: 16,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+
+  static TextStyle white24Title = const TextStyle(
+      color: Colors.white,
+      letterSpacing: 0.4,
+      fontSize: 24,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
+
+  static TextStyle white12Title = const TextStyle(
+      color: Colors.white,
+      letterSpacing: 0.4,
+      fontSize: 12,
       fontWeight: FontWeight.w400,
       fontFamily: 'Gilroy');
 

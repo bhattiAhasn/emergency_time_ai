@@ -51,5 +51,17 @@ class AppIcons {
   static const String twitterIcon2= "$imageDir/twitter.png";
 
 
+  static const String sortingIcon = "$imageDir/sort.png";
+  static const String filterIcon = "$imageDir/filter.png";
+  static const String morningIcon = "$imageDir/ic_morning.png";
+  static const String eveningIcon = "$imageDir/ic_evening.png";
+
+  static const String timeIcon = "$imageDir/time.png";
+  static const String locationIcon = "$imageDir/location.png";
+  static const String chatIcon = "$imageDir/chat.png";
+  static const String shareIcon = "$imageDir/share.png";
+
+
+
 
 }
