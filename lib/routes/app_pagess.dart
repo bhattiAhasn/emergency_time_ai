@@ -1,3 +1,4 @@
+import 'package:emergency_time/views/doctor_listing_screen/doctor_listing_screen.dart';
 import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
 import 'package:emergency_time/views/hospital_locator/hospital_locator.dart';
 import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
@@ -114,5 +115,11 @@ class AppPages {
       name: Routes.feedbackScreen,
       page: () => const FeedbackScreen(),
     ),
+
+    GetPage(
+      name: Routes.doctorListingScreen,
+      page: () => const DoctorListingScreen(),
+    ),
+
   ];
 }

@@ -116,7 +116,11 @@ class DashboardScreen extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: [
-        _buildCategoryCard(Image.asset(AppAssets.doctorDashboard)),
+        InkWell(
+            child: _buildCategoryCard(Image.asset(AppAssets.doctorDashboard)),
+         onTap: (){
+           Get.toNamed(Routes.doctorListingScreen);
+        },),
         _buildCategoryCard(Image.asset(AppAssets.diagonosticDas)),
         InkWell(
           onTap: () {
