@@ -1,5 +1,3 @@
-import 'package:emergency_time/views/book_appointment_screen/book_apointment_screen.dart';
-import 'package:emergency_time/views/doctor_details_screen/doctor_detail_screen.dart';
 import 'package:emergency_time/views/doctor_listing_screen/doctor_listing_screen.dart';
 import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
 import 'package:emergency_time/views/hospital_locator/hospital_locator.dart';
@@ -122,17 +120,6 @@ class AppPages {
       name: Routes.doctorListingScreen,
       page: () => const DoctorListingScreen(),
     ),
-
-    GetPage(
-        name: Routes.bookAppointmentScreen,
-        page: ()=> const BookAppointmentScreen()
-    ),
-
-    GetPage(
-        name: Routes.doctorDetailsScreen,
-        page: ()=> const DoctorDetailScreen()
-    ),
-
 
   ];
 }

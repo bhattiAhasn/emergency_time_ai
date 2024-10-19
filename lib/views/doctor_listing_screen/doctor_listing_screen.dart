@@ -1,4 +1,3 @@
-import 'package:emergency_time/constants/app_colors/app_colors.dart';
 import 'package:emergency_time/views/doctor_listing_screen/doctor_listing_screen_controller.dart';
 import 'package:emergency_time/views/doctor_listing_screen/local_widgets/doctor_listing_tile.dart';
 import 'package:emergency_time/widgets/common_spaces/common_spaces.dart';
@@ -116,57 +115,12 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
           ),
         ),
       ),
-      floatingActionButton: SizedBox(
-        height: Get.height * .06,
-        child: Card(
-          elevation: 16,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(33),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4.0),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Row(
-                    children: [
-                      Image.asset(AppIcons.sortingIcon,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text("Sort", style: CommonTextStyle.titleHeading,),
-                      )
-                    ],
-                  ),
-                ),
-                Container(width: 1, color: AppColors.lightGreyTextColor,),
-                const Divider(height: 1, color: AppColors.lightGreyTextColor,),
-                Container(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Row(
-                    children: [
-                      Image.asset(AppIcons.filterIcon,),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                        child: Text("Filter", style: CommonTextStyle.titleHeading,),
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
   Widget _buildSearchField() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0,),
+      padding: const EdgeInsets.only(top: 20.0, bottom: 10.0),
       child: TextField(
         decoration: InputDecoration(
           hintText: 'Search Cardiologist',

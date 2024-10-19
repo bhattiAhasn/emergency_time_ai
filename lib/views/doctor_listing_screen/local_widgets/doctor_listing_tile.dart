@@ -2,8 +2,6 @@ import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/widgets/common_spaces/common_spaces.dart';
 import 'package:emergency_time/widgets/common_textstyle/common_text_style.dart';
 
-import '../../../routes/app_routes.dart';
-
 class DoctorListingTile extends StatefulWidget {
   final String doctorName;
   final String image;
@@ -45,11 +43,7 @@ class _DoctorListingTileState extends State<DoctorListingTile> {
               children: [
                 CircleAvatar(
                   radius: 30,
-                  child: SizedBox(
-                    // width: 50,
-                   // height: 50,
-                    child: Image.asset(widget.image, fit: BoxFit.cover),  // Ensure the image covers the area
-                  ),
+                  child: Image.asset(widget.image),
                 ),
                 const Positioned(
                   bottom: 1,
@@ -189,27 +183,23 @@ class _DoctorListingTileState extends State<DoctorListingTile> {
                   ),
                 ),
               ),
-              InkWell(
-                child: Container(
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.redSplashColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Center(
-                      child: Text(
-                        "Book Appointment",
-                        style: CommonTextStyle.whiteSubTitle,
-                      ),
+              Container(
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppColors.redSplashColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: Center(
+                    child: Text(
+                      "Book Appointment",
+                      style: CommonTextStyle.whiteSubTitle,
                     ),
                   ),
                 ),
-                onTap: () {
-                  Get.toNamed(Routes.bookAppointmentScreen);
-                }
               ),
+
             ],
           )
         ],
