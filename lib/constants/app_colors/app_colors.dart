@@ -36,6 +36,7 @@ class AppColors {
   static const Color backgroundTextColor = Color(0xffF5F8FA);
   static const Color lightGreyTextColor = Color(0xffDDE5ED);
   static const Color lightGreyBackground = Color(0xffF5F8FA);
+  static const Color textBlue = Color(0xff14BFFF);
 
 
 

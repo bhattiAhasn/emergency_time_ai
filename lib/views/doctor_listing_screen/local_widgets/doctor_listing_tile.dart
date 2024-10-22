@@ -1,3 +1,4 @@
+import 'package:emergency_time/routes/app_routes.dart';
 import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/widgets/common_spaces/common_spaces.dart';
 import 'package:emergency_time/widgets/common_textstyle/common_text_style.dart';
@@ -183,21 +184,26 @@ class _DoctorListingTileState extends State<DoctorListingTile> {
                   ),
                 ),
               ),
-              Container(
-                height: 40,
-                decoration: BoxDecoration(
-                  color: AppColors.redSplashColor,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: Center(
-                    child: Text(
-                      "Book Appointment",
-                      style: CommonTextStyle.whiteSubTitle,
+              InkWell(
+                child: Container(
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: AppColors.redSplashColor,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Center(
+                      child: Text(
+                        "Book Appointment",
+                        style: CommonTextStyle.whiteSubTitle,
+                      ),
                     ),
                   ),
                 ),
+                onTap: (){
+                  Get.toNamed(Routes.bookAppointmentScreen);
+                },
               ),
 
             ],

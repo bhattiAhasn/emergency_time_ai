@@ -349,6 +349,13 @@ class CommonTextStyle {
       fontWeight: FontWeight.w400,
       fontFamily: 'Gilroy');
 
+  static TextStyle red14Text = const TextStyle(
+      color: AppColors.redSplashColor,
+      letterSpacing: 0.4,
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      fontFamily: 'Gilroy');
+
 
 
 }

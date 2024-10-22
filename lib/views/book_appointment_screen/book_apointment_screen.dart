@@ -9,6 +9,7 @@ import '../../widgets/common_spaces/common_spaces.dart';
 import 'book_appointment_controller.dart';
 import 'local_widgets/appointment_tile.dart';
 import 'local_widgets/day_card.dart';
+import 'package:intl/intl.dart';
 
 class BookAppointmentScreen extends StatelessWidget {
   const BookAppointmentScreen({super.key});
@@ -17,6 +18,9 @@ class BookAppointmentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final BookAppointmentController bookAppointmentController =
         Get.put(BookAppointmentController());
+
+    List<Map<String, String>> next30Days = getNext30Days();
+
     final List<Map<String, String>> timeSlots = [
       {"text": "10:30 AM", "value": "10:30 AM"},
       {"text": "11:00 AM", "value": "11:00 AM"},
@@ -46,6 +50,7 @@ class BookAppointmentScreen extends StatelessWidget {
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const AppointmentTile(
                   doctorName: 'Dr. Adaora Azubuike',
@@ -68,29 +73,23 @@ class BookAppointmentScreen extends StatelessWidget {
                           topRight: Radius.circular(30)),
                     ),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 30, left: 10),
-                          child: Text("Set date and time".toUpperCase(),
-                              style: CommonTextStyle.greyText, textAlign: TextAlign.left,),
-                        ),
-                        const SizedBox(
+                        CommonSpaces.spaceVertical30,
+                        SizedBox(
                           child: SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                DayCard(date: '13', day: 'Today'),
-                                DayCard(date: '14', day: 'Tomorrow'),
-                                DayCard(date: '15', day: 'Thursday'),
-                                DayCard(date: '16', day: 'Friday'),
-                                DayCard(date: '17', day: 'Saturday'),
-                              ],
+                              children: next30Days.map((dayInfo) {
+                                return DayCard(
+                                  date: dayInfo['date']!,
+                                  day: dayInfo['day']!,
+                                );
+                              }).toList(),
                             ),
                           ),
                         ),
+                        CommonSpaces.spaceVertical10,
                         SizedBox(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -110,13 +109,14 @@ class BookAppointmentScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                        CommonSpaces.spaceVertical10,
                         SizedBox(
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: GridView.builder(
                               shrinkWrap: true,
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 4,
                                 crossAxisSpacing: 8,
                                 mainAxisSpacing: 8,
@@ -134,11 +134,11 @@ class BookAppointmentScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        CommonSpaces.spaceVertical50,
                       ],
                     ),
                   ),
                 ),
+                CommonSpaces.spaceVertical50,
               ],
             ),
           ),
@@ -164,7 +164,7 @@ class BookAppointmentScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Get.toNamed(Routes.doctorDetailsScreen);
               },
             ),
@@ -172,6 +172,21 @@ class BookAppointmentScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  List<Map<String, String>> getNext30Days() {
+    List<Map<String, String>> daysList = [];
+    DateTime currentDate = DateTime.now();
+
+    for (int i = 0; i < 30; i++) {
+      DateTime date = currentDate.add(Duration(days: i));
+      String day = DateFormat('EEEE').format(date);
+      String dateStr = DateFormat('dd').format(date);
+
+      daysList.add({"day": day, "date": dateStr});
+    }
+
+    return daysList;
   }
 
   Widget _buildCustomRadioButton({
@@ -195,8 +210,8 @@ class BookAppointmentScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(14.0),
           ),
           child: SizedBox(
-            width: 120,
-            height: 45,
+            width: 140,
+            height: 50,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -215,7 +230,6 @@ class BookAppointmentScreen extends StatelessWidget {
       );
     });
   }
-
 
   Widget _buildTimeButton({
     required String text,

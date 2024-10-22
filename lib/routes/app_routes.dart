@@ -20,9 +20,7 @@ class Routes {
   static const inviteFriendScreen = '/InviteFriendScreen';
   static const feedbackScreen = '/FeedbackScreen';
   static const doctorListingScreen = '/DoctorListingScreen';
-
-
-
-
-
+  static const doctorDetailsScreen = '/DoctorDetailScreen';
+  static const bookAppointmentScreen = '/BookAppointmentScreen';
+  static const doctorListFilterScreen = '/doctorListFilterScreen';
 }

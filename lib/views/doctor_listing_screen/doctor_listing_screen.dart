@@ -1,4 +1,7 @@
+import 'package:emergency_time/constants/app_colors/app_colors.dart';
+import 'package:emergency_time/routes/app_routes.dart';
 import 'package:emergency_time/views/doctor_listing_screen/doctor_listing_screen_controller.dart';
+import 'package:emergency_time/views/doctor_listing_screen/local_widgets/custom_sort_bottomsheet.dart';
 import 'package:emergency_time/views/doctor_listing_screen/local_widgets/doctor_listing_tile.dart';
 import 'package:emergency_time/widgets/common_spaces/common_spaces.dart';
 import 'package:flutter/material.dart';
@@ -61,12 +64,12 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.symmetric(horizontal: 8.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
               _buildSearchField(),
-              CommonSpaces.spaceVertical10,
+              CommonSpaces.spaceVertical12,
               DoctorListingTile(
                 doctorName: 'Dr. Adaora Azubuike',
                 image: AppAssets.visitDr1,
@@ -77,7 +80,7 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
                 reviews: '56 Reviews',
                 selectedOption: '8PM',
               ),
-              CommonSpaces.spaceVertical10,
+              CommonSpaces.spaceVertical12,
               DoctorListingTile(
                 doctorName: 'Tua Manuera',
                 image: AppAssets.visitDr4,
@@ -88,7 +91,7 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
                 reviews: '56 Reviews',
                 selectedOption: '8PM',
               ),
-              CommonSpaces.spaceVertical10,
+              CommonSpaces.spaceVertical12,
               DoctorListingTile(
                 doctorName: 'Dr. Adaora Azubuike',
                 image: AppAssets.visitDr3,
@@ -99,7 +102,7 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
                 reviews: '56 Reviews',
                 selectedOption: '8PM',
               ),
-              CommonSpaces.spaceVertical10,
+              CommonSpaces.spaceVertical12,
               DoctorListingTile(
                 doctorName: 'Tua Manuera',
                 image: AppAssets.visitDr2,
@@ -110,11 +113,66 @@ class _DoctorListingScreenState extends State<DoctorListingScreen> {
                 reviews: '56 Reviews',
                 selectedOption: '8PM',
               ),
-          
             ],
           ),
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        elevation: 7,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Sort Icon and Text
+              GestureDetector(
+                onTap: () {
+                  Get.bottomSheet(CustomSortBottomsheet());
+                },
+                child: Row(
+                  children: [
+                    Image.asset(AppIcons.sortingIcon),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Sort",
+                      style: CommonTextStyle.titleHeading,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 16),
+
+              Container(
+                width: 1,
+                height: 30,
+                color: Colors.grey.shade300,
+              ),
+              const SizedBox(width: 16),
+
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.doctorListFilterScreen);
+                },
+                child: Row(
+                  children: [
+                    Image.asset(AppIcons.filterIcon),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Filter",
+                      style: CommonTextStyle.titleHeading,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+
     );
   }
 

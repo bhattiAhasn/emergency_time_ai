@@ -60,8 +60,6 @@ class AppIcons {
   static const String locationIcon = "$imageDir/location.png";
   static const String chatIcon = "$imageDir/chat.png";
   static const String shareIcon = "$imageDir/share.png";
-
-
-
+  static const String selectedIcon = "$imageDir/ic_selected.png";
 
 }

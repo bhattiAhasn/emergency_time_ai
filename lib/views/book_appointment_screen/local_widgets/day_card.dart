@@ -12,25 +12,21 @@ class DayCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Access the DaySelectionController
     final BookAppointmentController dayController = Get.find<BookAppointmentController>();
 
     return Obx(() {
-      // Determine if the current card is selected
       bool isSelected = dayController.selectedDate.value == date;
-
       return Padding(
         padding: const EdgeInsets.all(4.0),
         child: GestureDetector(
           onTap: () {
-            // Update the selected date when the card is tapped
             dayController.setSelectedDate(date);
           },
           child: Card(
             color: isSelected ? AppColors.redSplashColor : AppColors.white,
             child: SizedBox(
-              width: 80,
-              height: 100,
+              width: 90,
+              height: 110,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

@@ -35,4 +35,6 @@ class AppAssets {
 
 
   static const String threeLines = "$imageDir/threelines.png";
+  static const String posters = "$imageDir/poster_1.png";
+
 }
