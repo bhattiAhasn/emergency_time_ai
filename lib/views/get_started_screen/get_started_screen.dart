@@ -1,4 +1,5 @@
 import 'package:emergency_time/constants/app_colors/app_colors.dart';
+import 'package:emergency_time/utils/libraries/app_libraries.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -66,6 +67,9 @@ class GetStartedScreenState extends State<GetStartedScreen> {
                 right: 20,
                 child: GestureDetector(
                   onTap: () {
+                    _.isSkip = true;
+                    _.update();
+                    GetStorage().write('isSkip', _.isSkip);
                     Get.toNamed(Routes.loginScreen);
                   },
                   child: const MyText(
@@ -89,8 +93,14 @@ class GetStartedScreenState extends State<GetStartedScreen> {
                   textStyle: CommonTextStyle.authEmailNormalText,
                   onPressed: () {
                     if (_.currentPage == 2) {
+                      _.isSkip = true;
+                      _.update();
+                      GetStorage().write('isSkip', _.isSkip);
                       Get.toNamed(Routes.loginScreen);
                     } else {
+                      _.isSkip = true;
+                      _.update();
+                      GetStorage().write('isSkip', _.isSkip);
                       _.pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
                         curve: Curves.easeInOut,

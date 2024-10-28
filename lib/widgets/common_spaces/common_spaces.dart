@@ -10,6 +10,13 @@ class CommonSpaces {
   static const SizedBox spaceVertical10 = SizedBox(
     height: 10,
   );
+  static const SizedBox spaceVertical8 = SizedBox(
+    height: 8,
+  );
+  static const SizedBox spaceVertical6 = SizedBox(
+    height: 6,
+  );
+
   static const SizedBox spaceVertical20 = SizedBox(
     height: 20,
   );

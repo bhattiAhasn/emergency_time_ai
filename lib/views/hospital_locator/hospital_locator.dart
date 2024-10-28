@@ -1,9 +1,9 @@
-import 'package:emergency_time/constants/app_colors/app_colors.dart';
+import 'package:emergency_time/constants/app_assets/app_assets.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'hospital_locator_controller.dart'; // Import the controller
+import 'hospital_locator_controller.dart';
 
 class HospitalLocatorScreen extends StatelessWidget {
   const HospitalLocatorScreen({super.key});
@@ -18,28 +18,36 @@ class HospitalLocatorScreen extends StatelessWidget {
             title: const MyText(
               'Hospital Locator',
               color: Colors.black,
-              fontSize: 24,
             ),
-            backgroundColor: AppColors.redSplashColor,
+            actions: [
+              Image.asset(
+                AppAssets.threeLines,
+                height: 30,
+              ).marginOnly(right: 15)
+            ],
+            backgroundColor: Colors.white,
+            iconTheme: const IconThemeData(
+              color: Colors.black,
+            ),
           ),
           body: Stack(
             children: [
-              // Google Map with GetX reactive markers
+              // Google Map
               Obx(() => GoogleMap(
                     onMapCreated: controller.onMapCreated,
                     initialCameraPosition: CameraPosition(
                       target: controller.center,
-                      zoom: 14.0,
+                      zoom: 6.0,
                     ),
                     markers: controller.markers.value,
                   )),
-              // Search Bar
+
+              // Search bar for city input
               Positioned(
                 top: 20,
                 left: 15,
                 right: 15,
                 child: Container(
-                  height: 50,
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -51,115 +59,92 @@ class HospitalLocatorScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Row(
+                  child: Column(
                     children: [
-                      const Icon(Icons.search, color: Colors.grey),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Obx(
-                          () => TextField(
-                            onChanged: (value) =>
-                                controller.updateSearchQuery(value),
-                            style: const TextStyle(color: Colors.black),
-                            decoration: InputDecoration(
-                              border: InputBorder.none,
-                              hintText: controller.searchQuery.value.isEmpty
-                                  ? 'New Delhi'
-                                  : controller.searchQuery.value,
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: controller.cityName,
+                            style: const TextStyle(
+                              color: Colors.black,
                             ),
+
+                            // controller: TextEditingController(
+                            //   text: controller.searchQuery.value,
+                            // ),
+
+                            // Bind the text field controller to searchQuery
+
+                            onChanged: (value) {
+                              controller.searchQuery.value = value;
+                              controller.updateCitySuggestions();
+                            },
+                            onSubmitted: (value) {
+                              if (value.isNotEmpty) {
+                                controller.searchHospitalsInCity(value);
+                              }
+                            },
+                            decoration: const InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                              ),
+                              hintText: 'Enter city name (e.g. London)',
+                              border: InputBorder.none,
+                            ),
+                          )),
+                          IconButton(
+                            icon: const Icon(
+                              Icons.clear,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              controller.cityName
+                                  .clear(); // Call the clear method
+                            },
                           ),
-                        ),
+                        ],
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.clear, color: Colors.grey),
-                        onPressed: () {
-                          controller.clearSearch();
-                        },
-                      ),
+                      // Display city suggestions
+                      Obx(() {
+                        return controller.citySuggestions.isNotEmpty
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: controller.citySuggestions.length,
+                                itemBuilder: (context, index) {
+                                  return ListTile(
+                                    title: MyText(
+                                      controller.citySuggestions[index],
+                                      color: Colors.black,
+                                    ),
+                                    onTap: () {
+                                      // Update search query with selected city
+                                      controller.searchQuery.value =
+                                          controller.citySuggestions[index];
+                                      // Search hospitals for the selected city
+                                      controller.searchHospitalsInCity(
+                                          controller.citySuggestions[index]);
+                                      // Clear suggestions after selection
+                                      controller.citySuggestions.clear();
+                                      controller.cityName.text =
+                                          controller.searchQuery.value;
+                                      controller.update();
+                                    },
+                                  );
+                                },
+                              )
+                            : const SizedBox
+                                .shrink(); // Return an empty widget if no suggestions
+                      }),
                     ],
                   ),
                 ),
-              ),
-              // Hospital Info Card
-              Positioned(
-                bottom: 20,
-                left: 15,
-                right: 15,
-                child: HospitalInfoCard(),
               ),
             ],
           ),
         );
       },
-    );
-  }
-}
-
-class HospitalInfoCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          const BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'MULTI SPECIALITY',
-            style: TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Text(
-            'Medicity Hospital',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            '645 Jericho Tpke, Hyde Park, NY 11040',
-            style: TextStyle(
-              color: Colors.grey[600],
-              fontSize: 12,
-            ),
-          ),
-          const SizedBox(height: 8),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Open until 12:30 am',
-                style: TextStyle(
-                  color: Colors.green,
-                  fontSize: 12,
-                ),
-              ),
-              Text(
-                '1.4 Km',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }

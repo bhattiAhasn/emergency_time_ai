@@ -1,5 +1,6 @@
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
 import 'package:emergency_time/views/dashboard_screen/dash_board_screen.dart';
+import 'package:emergency_time/views/select_country/select_contry_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -149,7 +150,7 @@ class LoginScreen extends StatelessWidget
                 text: 'Login',
                 textStyle: CommonTextStyle.signupColor,
                 onPressed: () async {
-                  Get.to(() => const DashboardScreen());
+                  Get.to(() => const SelectCountryScreen());
                   // if (formKey.currentState!.validate()) {
                   //   await loginController.loginUser();
                   // }

@@ -1,3 +1,7 @@
+import 'package:emergency_time/views/book_appointment_screen/book_apointment_screen.dart';
+import 'package:emergency_time/views/doctor_details_screen/doctor_detail_screen.dart';
+import 'package:emergency_time/views/doctor_listing_screen/doctor_listing_screen.dart';
+import 'package:emergency_time/views/doctor_listing_screen/local_widgets/filters_screen.dart';
 import 'package:emergency_time/views/feedback_screen/feedback_screen.dart';
 import 'package:emergency_time/views/hospital_locator/hospital_locator.dart';
 import 'package:emergency_time/views/appointment_screen/appointment_screen.dart';
@@ -88,7 +92,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.hospitalLocatorScreen,
-      page: () => const HospitalLocatorScreen(),
+      page: () => HospitalLocatorScreen(),
     ),
     //
     // //profile page screen
@@ -114,5 +118,30 @@ class AppPages {
       name: Routes.feedbackScreen,
       page: () => const FeedbackScreen(),
     ),
+
+    GetPage(
+      name: Routes.doctorListingScreen,
+      page: () => const DoctorListingScreen(),
+    ),
+
+    GetPage(
+      name: Routes.doctorDetailsScreen,
+      page: () => const DoctorDetailScreen(),
+    ),
+
+    GetPage(
+      name: Routes.bookAppointmentScreen,
+      page: () => const BookAppointmentScreen(),
+    ),
+
+
+    GetPage(
+      name: Routes.doctorListFilterScreen,
+      page: () => const FiltersScreen(),
+    ),
+
+
+
+
   ];
 }

@@ -1,5 +1,4 @@
 class AppAssets {
-
   static const String imageDir = "assets/images";
 
   static const String profilePic = "$imageDir/profile_pic.png";
@@ -27,12 +26,15 @@ class AppAssets {
   static const String visitDr3 = "$imageDir/dr3.png";
   static const String visitDr4 = "$imageDir/dr4.png";
 
-
   static const String hospitalLocator = "$imageDir/hospital_locator.png";
   static const String bmiCalculator = "$imageDir/bmi_calculator.png";
   static const String stressIndex = "$imageDir/stress_index.png";
   // static const String diagonosticDas = "$imageDir/diagnostic_das.png";
   static const String shareWithFriendsImage = "$imageDir/share-friends.png";
   static const String noNotificationsImage = "$imageDir/no_notifications.png";
+
+
+  static const String threeLines = "$imageDir/threelines.png";
+  static const String posters = "$imageDir/poster_1.png";
 
 }

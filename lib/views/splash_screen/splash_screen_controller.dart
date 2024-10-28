@@ -7,7 +7,9 @@ class SplashScreenController extends GetxController {
   @override
   void onReady() {
     Future.delayed(const Duration(seconds: 3), () {
-      Get.toNamed(Routes.getStartedScreen);
+      storage.read('isSkip') == true
+          ? Get.toNamed(Routes.loginScreen)
+          : Get.toNamed(Routes.getStartedScreen);
     });
   }
 }
