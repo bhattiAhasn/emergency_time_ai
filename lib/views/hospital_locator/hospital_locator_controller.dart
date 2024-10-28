@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
@@ -12,10 +11,13 @@ class HospitalLocatorController extends GetxController {
   final RxSet<Marker> markers = <Marker>{}.obs;
 
   RxList<String> citySuggestions = <String>[].obs; // Store city suggestions
+  RxList<String> hospitalNames = <String>[].obs; // List to store hospital names
+
   GoogleMapController? mapController;
   Position? currentPosition;
   RxString searchQuery = ''.obs;
   TextEditingController cityName = TextEditingController();
+  RxBool hospitalList = true.obs;
 
   // Replace with your actual Google API key
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
@@ -139,7 +141,7 @@ class HospitalLocatorController extends GetxController {
       print('City>>>>>>>>>$city');
     }
 
-    update();
+    update(); // Updates the UI immediately
     final String url =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?query=hospitals+in+$city&key=$googleApiKey';
 
@@ -148,8 +150,9 @@ class HospitalLocatorController extends GetxController {
       final data = json.decode(response.body);
       final results = data['results'] as List;
 
-      // Clear existing markers
+      // Clear existing markers and hospital names
       markers.clear();
+      hospitalNames.clear();
 
       // Add new markers based on search results
       for (var place in results) {
@@ -164,6 +167,12 @@ class HospitalLocatorController extends GetxController {
             ? _calculateDistance(
                 currentPosition!.latitude, currentPosition!.longitude, lat, lng)
             : 'Distance unavailable';
+
+        // Print the hospital name
+        print('Hospital Name: $name');
+
+        // Add hospital name and distance to the list
+        hospitalNames.add('$name - $distance');
 
         markers.add(
           Marker(

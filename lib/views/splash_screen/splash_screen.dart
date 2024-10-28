@@ -14,23 +14,27 @@ class SplashScreen extends StatelessWidget {
       init: SplashScreenController(),
       builder: (_) {
         return Scaffold(
-            backgroundColor: AppColors.redSplashColor,
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Center(
-                    child: Image.asset(
+          backgroundColor: AppColors.redSplashColor,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: Image.asset(
                   AppAssets.logo,
                   height: 200,
-                )).marginOnly(left: 25, right: 25),
-                const MyText(
-                  'Powered By Artificial Intelligence',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.white,
-                )
-              ],
-            ));
+                ),
+              ),
+              const SizedBox(height: 20), // Add some spacing
+              const MyText(
+                'Powered By Artificial Intelligence',
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+                color: AppColors.white,
+              ),
+            ],
+          ),
+        );
       },
     );
   }

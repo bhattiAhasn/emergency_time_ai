@@ -34,4 +34,5 @@ class AppAssets {
   static const String noNotificationsImage = "$imageDir/no_notifications.png";
 
   static const String threeLines = "$imageDir/threelines.png";
+  static const String hospitalLogo = "$imageDir/hospital_logo.png";
 }
