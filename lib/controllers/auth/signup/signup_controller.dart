@@ -1,7 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+
+// Import your constants, routes, and other utilities
 import '../../../constants/app_assets/app_assets.dart';
 import '../../../constants/app_keys/app_keys.dart';
 import '../../../constants/app_strings/app_strings.dart';
@@ -14,42 +19,12 @@ import '../../../widgets/common_textstyle/common_text_style.dart';
 import '../../../widgets/common_toast/common_toast.dart';
 
 class SignUpController extends GetxController with InitializeLocalStorage {
-  TextEditingController username = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
-  TextEditingController confirmPassword = TextEditingController();
-  RxBool isLoading = false.obs;
-  // final String baseUrl =
-  //     "http://openpolicy1.canadacentral.cloudapp.azure.com:8000";
-  // final String registerEndpoint = "/register/";
-  //
-  // Future<void> registerUser(
-  //     String name, String email, String username, String password) async {
-  //   print('hellllllo');
-  //   final url = Uri.parse(baseUrl + registerEndpoint);
-  //   final response = await http.post(
-  //     url,
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //     body: jsonEncode(<String, String>{
-  //       'name': name,
-  //       'email': email,
-  //       'username': username,
-  //       'password': password,
-  //     }),
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     print("response of register call==============${response.body}");
-  //     // Registration successful
-  //     print('User registered successfully');
-  //   } else {
-  //     // Registration failed
-  //     print('Failed to register user: ${response.statusCode}');
-  //   }
-  // }
-  // Register user call
+  final TextEditingController username = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final TextEditingController confirmPassword = TextEditingController();
+  final RxBool isLoading = false.obs;
+
   Future<void> registerUser() async {
     try {
       isLoading.value = true; // Show loading indicator
@@ -61,7 +36,7 @@ class SignUpController extends GetxController with InitializeLocalStorage {
 
       // Prepare headers and body
       final Map<String, String> headers = {
-        'Content-Type': 'application/json; charset=UTF-8',
+        "Content-Type": "application/json",
       };
 
       final Map<String, String> body = {
@@ -69,6 +44,8 @@ class SignUpController extends GetxController with InitializeLocalStorage {
         'email': email.text,
         'username': username.text,
         'password': password.text,
+        'password_confirmation':
+            confirmPassword.text, // Assuming confirmation needed
       };
 
       final String bodyJson = jsonEncode(body);
@@ -90,6 +67,7 @@ class SignUpController extends GetxController with InitializeLocalStorage {
 
       // Handle response based on status code
       switch (res.statusCode) {
+        case 201:
         case 200:
           _handleSuccess(res.body);
           break;
@@ -114,60 +92,68 @@ class SignUpController extends GetxController with InitializeLocalStorage {
     }
   }
 
-// Handle successful registration response
+  // Handle successful registration response
   void _handleSuccess(String responseBody) {
     final Map<String, dynamic> data = jsonDecode(responseBody);
 
-    storage.write(AppKeys.userEmailKey, data["email"]);
-    storage.write(AppKeys.usernameKey, data["username"]);
-    storage.write('userId', data["id"]);
+    // Access 'user' and 'token' fields based on response structure
+    final email = data["user"]?["email"] ?? "";
+    final userName = data["user"]?["name"] ?? "";
+    final token = data["token"] ?? "";
+    final userId = data["user"]?["id"] ?? "";
+
+    // Only write to storage if the values are not null or empty
+    if (email.isNotEmpty) storage.write(AppKeys.userEmailKey, email);
+    if (userName.isNotEmpty) storage.write(AppKeys.usernameKey, userName);
+    if (token.isNotEmpty) storage.write('token', token);
+    if (userId != null) storage.write('userId', userId.toString());
+
     storage.write(AppKeys.isAppOpenKey, "true");
 
-    print("Stored username: ${storage.read("username")}");
+    print("Stored username: ${storage.read(AppKeys.usernameKey)}");
 
     signUpDialog();
 
     Future.delayed(const Duration(seconds: 2), () {
       Get.offAndToNamed(Routes.loginScreen);
-      print('Is app open: ${storage.read('isAppOpen')}');
+      if (kDebugMode) {
+        print('Is app open: ${storage.read(AppKeys.isAppOpenKey)}');
+      }
     });
   }
 
+  // Show Sign-up Success Dialog
   void signUpDialog() {
     Get.dialog(
       AlertDialog(
         shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(10), // Adjust the border radius as needed
+          borderRadius: BorderRadius.circular(10),
         ),
         contentPadding: EdgeInsets.zero,
         content: SizedBox(
-            height: Get.height / 4.8,
-            width: Get.width / 1.6,
-            child: Column(
-              children: [
-                CommonSpaces.spaceVertical10,
-                Text(
-                  'Signup',
-                  style: CommonTextStyle.EditProfileFont,
-                ),
-                CommonSpaces.spaceVertical10,
-                // Image.asset(
-                //   AppAssets.splashScreen,
-                //   height: 45,
-                // ),
-                CommonSpaces.spaceVertical20,
-                Text(
-                  'Congratulations!',
-                  style: CommonTextStyle.EditProfileFont,
-                ),
-                CommonSpaces.spaceVertical10,
-                Text(
-                  'Account has been created successfully',
-                  style: CommonTextStyle.font12weightNormal342f,
-                ),
-              ],
-            )),
+          height: Get.height / 4.8,
+          width: Get.width / 1.6,
+          child: Column(
+            children: [
+              CommonSpaces.spaceVertical10,
+              Text(
+                'Signup',
+                style: CommonTextStyle.EditProfileFont,
+              ),
+              CommonSpaces.spaceVertical10,
+              CommonSpaces.spaceVertical20,
+              Text(
+                'Congratulations!',
+                style: CommonTextStyle.EditProfileFont,
+              ),
+              CommonSpaces.spaceVertical10,
+              Text(
+                'Account has been created successfully',
+                style: CommonTextStyle.font12weightNormal342f,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

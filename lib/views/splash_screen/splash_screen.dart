@@ -1,9 +1,9 @@
-import 'package:emergency_time/constants/app_colors/app_colors.dart';
-import 'package:emergency_time/views/splash_screen/splash_screen_controller.dart';
-import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../constants/app_colors/app_colors.dart';
 import '../../constants/app_assets/app_assets.dart';
+import 'splash_screen_controller.dart';
+import '../../widgets/text_widget/text_widget.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -15,24 +15,26 @@ class SplashScreen extends StatelessWidget {
       builder: (_) {
         return Scaffold(
           backgroundColor: AppColors.redSplashColor,
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Image.asset(
-                  AppAssets.logo,
-                  height: 200,
+          body: Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Image.asset(
+                    AppAssets.logo,
+                    height: 200,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20), // Add some spacing
-              const MyText(
-                'Powered By Artificial Intelligence',
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: AppColors.white,
-              ),
-            ],
+                const SizedBox(height: 20),
+                const MyText(
+                  'Powered By Artificial Intelligence',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.white,
+                ),
+              ],
+            ),
           ),
         );
       },

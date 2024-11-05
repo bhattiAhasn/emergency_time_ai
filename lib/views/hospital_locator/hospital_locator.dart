@@ -39,7 +39,7 @@ class HospitalLocatorScreen extends StatelessWidget {
           body: Stack(
             children: [
               // Google Map or Hospital List
-              Obx(() => controller.hospitalList.value
+              Obx(() => controller.hospitalList.value == false
                   ? GoogleMap(
                       onMapCreated: controller.onMapCreated,
                       initialCameraPosition: CameraPosition(
@@ -97,7 +97,7 @@ class HospitalLocatorScreen extends StatelessWidget {
                               ),
                             );
                           },
-                        );
+                        ).marginOnly(top: 70);
                       }
                     })),
 
@@ -173,16 +173,6 @@ class HospitalLocatorScreen extends StatelessWidget {
                                     ),
                                     onTap: () {
                                       // Update search query with selected city
-                                      controller.searchQuery.value =
-                                          controller.citySuggestions[index];
-                                      // Search hospitals for the selected city
-                                      controller.searchHospitalsInCity(
-                                          controller.citySuggestions[index]);
-                                      // Clear suggestions after selection
-                                      controller.citySuggestions.clear();
-                                      controller.cityName.text =
-                                          controller.searchQuery.value;
-                                      controller.update();
                                     },
                                   );
                                 },

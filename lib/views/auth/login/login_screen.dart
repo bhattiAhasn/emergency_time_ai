@@ -64,6 +64,7 @@ class LoginScreen extends StatelessWidget
               CommonTextField(
                 hintText: 'Email',
                 controller: loginController.email,
+                focus: FocusNode(),
                 bordercolor: AppColors.colorC1c1,
                 disableBorderColor: AppColors.colorC1c1,
                 textColor: AppColors.blackColor,
@@ -150,10 +151,9 @@ class LoginScreen extends StatelessWidget
                 text: 'Login',
                 textStyle: CommonTextStyle.signupColor,
                 onPressed: () async {
-                  Get.to(() => const SelectCountryScreen());
-                  // if (formKey.currentState!.validate()) {
-                  //   await loginController.loginUser();
-                  // }
+                  if (formKey.currentState!.validate()) {
+                    await loginController.loginUser();
+                  }
                 },
                 fillColor: Colors.red,
                 textColor: Colors.white,

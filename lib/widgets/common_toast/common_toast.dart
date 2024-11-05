@@ -7,11 +7,11 @@ class CommonToast {
   static void showToast(String message, {Color? color}) {
     Fluttertoast.showToast(
       msg: message,
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.CENTER,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 1,
-      backgroundColor: color ?? AppColors.appColor,
-      textColor: Colors.white,
+      backgroundColor: Colors.white,
+      textColor: AppColors.appColor,
       fontSize: 16.0,
     );
   }

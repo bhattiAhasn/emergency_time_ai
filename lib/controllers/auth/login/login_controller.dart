@@ -55,6 +55,7 @@ class LoginController extends GetxController with InitializeLocalStorage {
       // Handle response based on status code
       switch (res.statusCode) {
         case 200:
+        case 201:
           handleSuccess(res.body);
           break;
         case 401:

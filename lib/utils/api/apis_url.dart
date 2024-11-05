@@ -1,15 +1,14 @@
 class ApiData {
-  static const String baseUrl =
-      "http://openpolicy1.canadacentral.cloudapp.azure.com:8000";
+  static const String baseUrl = "https://www.emergencytime.help/api";
 
-  static const String login = "$baseUrl/login";
+  static const String login = "$baseUrl/loginApi";
 
   static const String profile = "$baseUrl/profile";
 
   static const String getPolls = "$baseUrl/polls/";
 
   //Register user
-  static const String registerUser = "$baseUrl/register/";
+  static const String registerUser = "$baseUrl/registerApi";
 
   //show bills
   static const String allBills = "$baseUrl/bills/";

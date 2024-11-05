@@ -167,7 +167,7 @@ class CommonTextField extends StatelessWidget {
         style: TextStyle(
             letterSpacing: 0.4,
             color: textColor,
-            fontSize: 14.0,
+            fontSize: 16.0,
             fontWeight: FontWeight.w400),
         controller: controller,
         validator: validator,

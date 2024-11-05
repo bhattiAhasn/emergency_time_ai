@@ -9,9 +9,7 @@ import '../../../controllers/auth/signup/signup_controller.dart';
 import '../../../mixin_classes/keys_variables_abstract.dart';
 import '../../../mixin_classes/validate_email/validate_email.dart';
 import 'package:flutter/material.dart';
-import '../../../routes/app_routes.dart';
 import '../../../widgets/common_buttons/common_button.dart';
-import '../../../widgets/common_container/common_container.dart';
 import '../../../widgets/common_scaffold/common_scaffold.dart';
 import '../../../widgets/common_spaces/common_spaces.dart';
 import '../../../widgets/common_textfields/commn_textfield.dart';
@@ -109,7 +107,7 @@ class SignUpScreen extends StatelessWidget
               CommonSpaces.spaceVertical10,
               Obx(
                 () => CommonTextField(
-                  hintText: 'Mobile No',
+                  hintText: 'Confirm Password',
                   controller: controller.confirmPassword,
                   bordercolor: AppColors.colorC1c1,
                   disableBorderColor: AppColors.colorC1c1,
@@ -134,20 +132,19 @@ class SignUpScreen extends StatelessWidget
                 width: Get.width,
                 text: 'Register',
                 onPressed: () async {
-                  Get.to(() => const SelectCountryScreen());
-                  // if (formKey.currentState!.validate()) {
-                  //   if (controller.password.text ==
-                  //       controller.confirmPassword.text) {
-                  //     controller.registerUser();
-                  //     // controller.registerUser(
-                  //     //     controller.username.text,
-                  //     //     controller.email.text,
-                  //     //     controller.username.text,
-                  //     //     controller.password.text);
-                  //   } else {
-                  //     BotToast.showText(text: AppStrings.passwordNotMatch);
-                  //   }
-                  // }
+                  if (formKey.currentState!.validate()) {
+                    if (controller.password.text ==
+                        controller.confirmPassword.text) {
+                      controller.registerUser();
+                      // controller.registerUser(
+                      //     controller.username.text,
+                      //     controller.email.text,
+                      //     controller.username.text,
+                      //     controller.password.text);
+                    } else {
+                      BotToast.showText(text: AppStrings.passwordNotMatch);
+                    }
+                  }
                 },
                 fillColor: Colors.red,
                 textStyle: CommonTextStyle.signupColor,
