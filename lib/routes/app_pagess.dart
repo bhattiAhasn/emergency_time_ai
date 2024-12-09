@@ -20,6 +20,7 @@ import '../views/chatbot_screen/chat_bot_screen.dart';
 import '../views/dashboard_screen/dash_board_screen.dart';
 import '../views/get_started_screen/get_started_screen.dart';
 import '../views/guest_or_login/gues_or_login.dart';
+import '../views/select_country/select_contry_screen.dart';
 import '../views/splash_screen/splash_screen.dart';
 import 'app_routes.dart';
 
@@ -134,14 +135,14 @@ class AppPages {
       page: () => const BookAppointmentScreen(),
     ),
 
-
     GetPage(
       name: Routes.doctorListFilterScreen,
       page: () => const FiltersScreen(),
     ),
 
-
-
-
+    GetPage(
+      name: Routes.countriesScreen,
+      page: () => const SelectCountryScreen(),
+    ),
   ];
 }

@@ -177,9 +177,9 @@ class DrawerItem extends StatelessWidget {
       ),
       title: MyText(
         title,
-        fontSize: 17,
+        fontSize: 15,
         color: Colors.black,
-        fontWeight: FontWeight.bold,
+        // fontWeight: FontWeight.bold,
       ),
       trailing: trailing,
       onTap: onTap ?? () {}, // Use onTap if provided, otherwise do nothing

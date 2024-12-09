@@ -6,187 +6,189 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'hospital_locator_controller.dart';
 
 class HospitalLocatorScreen extends StatelessWidget {
-  const HospitalLocatorScreen({super.key});
+  final HospitalLocatorController controller =
+      Get.put(HospitalLocatorController());
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HospitalLocatorController>(
-      init: HospitalLocatorController(),
-      builder: (controller) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const MyText(
-              'Hospital Locator',
-              color: Colors.black,
-            ),
-            actions: [
-              InkWell(
-                onTap: () {
-                  controller.hospitalList.value =
-                      !controller.hospitalList.value;
-                },
-                child: Image.asset(
-                  AppAssets.threeLines,
-                  height: 30,
-                ).marginOnly(right: 15),
-              )
-            ],
-            backgroundColor: Colors.white,
-            iconTheme: const IconThemeData(
-              color: Colors.black,
-            ),
-          ),
-          body: Stack(
-            children: [
-              // Google Map or Hospital List
-              Obx(() => controller.hospitalList.value == false
-                  ? GoogleMap(
-                      onMapCreated: controller.onMapCreated,
-                      initialCameraPosition: CameraPosition(
-                        target: controller.center,
-                        zoom: 6.0,
-                      ),
-                      markers: controller.markers.value,
-                    )
-                  : Obx(() {
-                      if (controller.hospitalNames.isEmpty) {
-                        return const Center(
-                            child: MyText('No hospitals found.'));
-                      } else {
-                        return ListView.builder(
-                          itemCount: controller.hospitalNames.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Image.asset(AppAssets.hospitalLogo),
-                              title: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const MyText(
-                                    'Multi Speciality',
-                                    color: Color(0xff506D85),
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                  MyText(
-                                    controller.hospitalNames[index]
-                                        .split(' - ')[0],
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 14,
-                                  ),
-                                  const Row(children: [
-                                    MyText(
-                                      'Open',
-                                      color: Color(0xff11BF80),
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    MyText(
-                                      ' 24 Hours',
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w400,
-                                    )
-                                  ])
-                                ],
-                              ),
-                              trailing: MyText(
-                                controller.hospitalNames[index]
-                                    .split(' - ')[1], // Distance
-                                color: const Color(0xff11BF80),
-                              ),
-                            );
-                          },
-                        ).marginOnly(top: 70);
-                      }
-                    })),
+    return HospitalListScreen(controller: controller);
+  }
+}
 
-              // Search bar for city input
-              Positioned(
-                top: 20,
-                left: 15,
-                right: 15,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 10,
-                      ),
-                    ],
+class HospitalListScreen extends StatelessWidget {
+  final HospitalLocatorController controller;
+
+  HospitalListScreen({required this.controller});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const MyText('Hospital Locator', color: Colors.black),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        automaticallyImplyLeading: false, // Disable default back button
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(13),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextField(
+                  controller: controller.cityName,
+                  onChanged: (value) {
+                    controller.searchQuery.value = value;
+                    controller.updateCitySuggestions();
+                  },
+                  decoration: const InputDecoration(
+                    hintText: 'Enter city',
+                    hintStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(20)), // Set radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(20)), // Add radius for enabled state
+                      borderSide: BorderSide(
+                          color:
+                              Colors.grey), // Optional: customize border color
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(20)), // Add radius for focused state
+                      borderSide: BorderSide(
+                          color:
+                              Colors.blue), // Optional: customize focus color
+                    ),
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: controller.cityName,
-                              style: const TextStyle(
-                                color: Colors.black,
-                              ),
-                              onChanged: (value) {
-                                controller.searchQuery.value = value;
-                                controller.updateCitySuggestions();
-                              },
-                              onSubmitted: (value) {
-                                if (value.isNotEmpty) {
-                                  controller.searchHospitalsInCity(value);
-                                }
-                              },
-                              decoration: const InputDecoration(
-                                hintStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                hintText: 'Enter city name (e.g. London)',
-                                border: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.clear,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              controller.cityName.clear(); // Clear search input
-                            },
-                          ),
-                        ],
-                      ),
-                      // Display city suggestions
-                      Obx(() {
-                        return controller.citySuggestions.isNotEmpty
-                            ? ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: controller.citySuggestions.length,
-                                itemBuilder: (context, index) {
-                                  return ListTile(
-                                    title: MyText(
-                                      controller.citySuggestions[index],
-                                      color: Colors.black,
-                                    ),
-                                    onTap: () {
-                                      // Update search query with selected city
-                                    },
-                                  );
-                                },
-                              )
-                            : const SizedBox.shrink(); // No suggestions
-                      }),
-                    ],
-                  ),
+                  style: const TextStyle(color: Colors.black),
+                )),
+                IconButton(
+                  icon: const Icon(Icons.search, color: Colors.black),
+                  onPressed: () {
+                    if (controller.cityName.text.isNotEmpty) {
+                      controller
+                          .searchHospitalsInCity(controller.cityName.text);
+                    }
+                  },
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        );
-      },
+          Obx(() {
+            if (controller.citySuggestions.isNotEmpty &&
+                controller.searchQuery.isNotEmpty) {
+              return Container(
+                height: 100,
+                child: ListView.builder(
+                  itemCount: controller.citySuggestions.length,
+                  itemBuilder: (context, index) {
+                    final suggestion = controller.citySuggestions[index];
+                    return ListTile(
+                      title: Text(suggestion,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () {
+                        controller.cityName.text = suggestion;
+                        controller.searchHospitalsInCity(suggestion);
+                        controller.citySuggestions.clear();
+                      },
+                    );
+                  },
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
+          Expanded(
+            child: Obx(() {
+              if (controller.hospitalNames.isEmpty) {
+                return const Center(
+                    child: MyText(
+                  'No hospitals found',
+                  color: Colors.black,
+                ));
+              } else {
+                return ListView.builder(
+                  itemCount: controller.hospitalNames.length,
+                  itemBuilder: (context, index) {
+                    final hospital = controller.hospitalNames[index];
+                    return ListTile(
+                      leading: Image.asset(AppAssets.hospitalLogo),
+                      title: Text(hospital,
+                          style: const TextStyle(color: Colors.black)),
+                      onTap: () async {
+                        final marker = controller.markers.elementAt(index);
+                        await controller.fetchRouteToHospital(marker.position);
+                        Get.to(() => HospitalMapScreen(
+                              controller: controller,
+                              initialMarkerIndex: index,
+                            ));
+                      },
+                    );
+                  },
+                );
+              }
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class HospitalMapScreen extends StatelessWidget {
+  final HospitalLocatorController controller;
+  final int initialMarkerIndex;
+
+  const HospitalMapScreen(
+      {super.key, required this.controller, required this.initialMarkerIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const MyText(
+          'Map View',
+          color: Colors.black,
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Obx(() => GoogleMap(
+                onMapCreated: controller.onMapCreated,
+                initialCameraPosition: CameraPosition(
+                    target: controller.markers
+                        .elementAt(initialMarkerIndex)
+                        .position,
+                    zoom: 15),
+                markers: controller.markers.toSet(),
+                polylines: controller.polylines.toSet(),
+              )),
+          Positioned(
+            bottom: 16,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () async {
+                await controller.showCurrentLocation();
+              },
+              backgroundColor: Colors.blue,
+              child: const Icon(Icons.my_location),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

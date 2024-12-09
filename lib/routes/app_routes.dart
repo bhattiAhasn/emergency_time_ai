@@ -23,4 +23,5 @@ class Routes {
   static const doctorDetailsScreen = '/DoctorDetailScreen';
   static const bookAppointmentScreen = '/BookAppointmentScreen';
   static const doctorListFilterScreen = '/doctorListFilterScreen';
+  static const countriesScreen = '/countriesScreen';
 }

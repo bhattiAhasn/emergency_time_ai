@@ -3,92 +3,37 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-
-import '../../utils/libraries/app_libraries.dart';
+import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
 class HospitalLocatorController extends GetxController {
   final LatLng center = const LatLng(30.3753, 69.3451); // Center of Pakistan
   final RxSet<Marker> markers = <Marker>{}.obs;
+  final RxSet<Polyline> polylines = <Polyline>{}.obs;
 
-  RxList<String> citySuggestions = <String>[].obs; // Store city suggestions
-  RxList<String> hospitalNames = <String>[].obs; // List to store hospital names
-
+  RxList<String> citySuggestions = <String>[].obs;
+  RxList<String> hospitalNames = <String>[].obs;
   GoogleMapController? mapController;
   Position? currentPosition;
   RxString searchQuery = ''.obs;
   TextEditingController cityName = TextEditingController();
   RxBool hospitalList = true.obs;
 
-  // Replace with your actual Google API key
   final String googleApiKey = dotenv.env['GOOGLE_API_KEY'] ?? '';
+  RxString selectedCountry = 'Pakistan'.obs;
 
-  // List of cities in Pakistan
-  final List<String> pakistanCities = [
-    'Karachi',
-    'Lahore',
-    'Islamabad',
-    'Faisalabad',
-    'Rawalpindi',
-    'Multan',
-    'Peshawar',
-    'Hyderabad',
-    'Gujranwala',
-    'Quetta',
-    'Sialkot',
-    'Bahawalpur',
-    'Gujrat',
-    'Mardan',
-    'Sargodha',
-    'Sheikhupura',
-    'Larkana',
-    'Rahim Yar Khan',
-    'Okara',
-    'Chiniot',
-    'Kasur',
-    'Dera Ghazi Khan',
-    'Mianwali',
-    'Nawabshah',
-    'Jhelum',
-    'Turbat',
-    'Kohat',
-    'Sukkur',
-    'Zhob',
-    'Faisalabad',
-  ];
-
-  // List of cities in the UK
-  final List<String> ukCities = [
-    'London',
-    'Birmingham',
-    'Manchester',
-    'Glasgow',
-    'Liverpool',
-    'Leeds',
-    'Sheffield',
-    'Bristol',
-    'Newcastle upon Tyne',
-    'Nottingham',
-    'Southampton',
-    'Leicester',
-    'Coventry',
-    'Bradford',
-    'Cardiff',
-    'Belfast',
-    'Brighton',
-    'Plymouth',
-    'Stoke-on-Trent',
-    'Wolverhampton',
-    'Derby',
-    'Luton',
-    'Swansea',
-    'Reading',
-    'Aberdeen',
-    'Dundee',
-    'Oxford',
-    'Cambridge',
-    'York',
-    'Gloucester',
-  ];
+  final Map<String, List<String>> availableCities = {
+    'Pakistan': [
+      'Karachi', 'Lahore', 'Islamabad', 'Faisalabad', 'Rawalpindi',
+      'Multan', 'Peshawar', 'Hyderabad', 'Gujranwala', 'Quetta',
+      // Additional cities...
+    ],
+    'USA': [
+      'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix',
+      'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose',
+      // Additional cities...
+    ],
+  };
 
   @override
   void onInit() {
@@ -101,18 +46,13 @@ class HospitalLocatorController extends GetxController {
     mapController = controller;
   }
 
-  // Get current user location
   Future<void> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       return Future.error('Location services are disabled.');
     }
 
-    permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -121,27 +61,42 @@ class HospitalLocatorController extends GetxController {
     }
 
     if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied.');
     }
 
     currentPosition = await Geolocator.getCurrentPosition();
   }
 
-  // Loads default markers
+  Future<void> showCurrentLocation() async {
+    currentPosition = await Geolocator.getCurrentPosition();
+    if (currentPosition != null) {
+      final currentLatLng =
+          LatLng(currentPosition!.latitude, currentPosition!.longitude);
+
+      // Add marker for current location
+      markers.add(
+        Marker(
+          markerId: MarkerId('currentLocation'),
+          position: currentLatLng,
+          infoWindow: InfoWindow(title: 'You are here'),
+        ),
+      );
+
+      // Animate the camera to the current location
+      mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(currentLatLng, 14.0),
+      );
+    }
+  }
+
   void _loadPakistanHospitals() {
     markers.addAll({
-      // Add default hospitals (as you did)
+      const Marker(
+          markerId: MarkerId('hospital1'), position: LatLng(30.3753, 69.3451)),
     });
   }
 
-  // Method to search hospitals in a selected city
   Future<void> searchHospitalsInCity(String city) async {
-    if (kDebugMode) {
-      print('City>>>>>>>>>$city');
-    }
-
-    update(); // Updates the UI immediately
     final String url =
         'https://maps.googleapis.com/maps/api/place/textsearch/json?query=hospitals+in+$city&key=$googleApiKey';
 
@@ -150,92 +105,120 @@ class HospitalLocatorController extends GetxController {
       final data = json.decode(response.body);
       final results = data['results'] as List;
 
-      // Clear existing markers and hospital names
       markers.clear();
       hospitalNames.clear();
 
-      // Add new markers based on search results
       for (var place in results) {
         final lat = place['geometry']['location']['lat'];
         final lng = place['geometry']['location']['lng'];
         final name = place['name'];
-        final address = place['formatted_address'];
-        final openingHours = place['opening_hours'] != null
-            ? place['opening_hours']['weekday_text']
-            : 'No hours available';
         final distance = currentPosition != null
             ? _calculateDistance(
                 currentPosition!.latitude, currentPosition!.longitude, lat, lng)
             : 'Distance unavailable';
 
-        // Print the hospital name
-        print('Hospital Name: $name');
-
-        // Add hospital name and distance to the list
         hospitalNames.add('$name - $distance');
 
         markers.add(
           Marker(
             markerId: MarkerId(name),
             position: LatLng(lat, lng),
-            infoWindow: InfoWindow(
-              title: name,
-              snippet: '$address\nDistance: $distance\nHours: $openingHours',
-            ),
+            infoWindow: InfoWindow(title: name),
           ),
         );
       }
 
-      // Update map center to the first result
       if (results.isNotEmpty && mapController != null) {
         final firstResult = results.first;
-        final lat = firstResult['geometry']['location']['lat'];
-        final lng = firstResult['geometry']['location']['lng'];
-
         mapController!.animateCamera(
-          CameraUpdate.newLatLngZoom(LatLng(lat, lng), 14.0),
+          CameraUpdate.newLatLngZoom(
+              LatLng(firstResult['geometry']['location']['lat'],
+                  firstResult['geometry']['location']['lng']),
+              14.0),
         );
       }
-    } else {
-      // Handle API error
-      print('Error fetching hospitals: ${response.body}');
     }
   }
 
-  // Calculate distance between two coordinates (in km)
+  Future<void> fetchRouteToHospital(LatLng destination) async {
+    if (currentPosition == null) return;
+
+    final String url =
+        'https://maps.googleapis.com/maps/api/directions/json?origin=${currentPosition!.latitude},${currentPosition!.longitude}&destination=${destination.latitude},${destination.longitude}&key=$googleApiKey';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final routes = data['routes'];
+      if (routes.isNotEmpty) {
+        final route = routes[0]['overview_polyline']['points'];
+        final polylinePoints = _decodePolyline(route);
+
+        polylines.clear();
+        polylines.add(Polyline(
+          polylineId: const PolylineId('route_to_hospital'),
+          points: polylinePoints,
+          color: Colors.blue,
+          width: 4,
+        ));
+      }
+    }
+  }
+
+  List<LatLng> _decodePolyline(String encoded) {
+    List<LatLng> polylinePoints = [];
+    int index = 0;
+    int len = encoded.length;
+    int lat = 0;
+    int lng = 0;
+
+    while (index < len) {
+      int b;
+      int shift = 0;
+      int result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      int dlat = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+      lat += dlat;
+
+      shift = 0;
+      result = 0;
+      do {
+        b = encoded.codeUnitAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      int dlng = (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
+      lng += dlng;
+
+      polylinePoints.add(LatLng(lat / 1E5, lng / 1E5));
+    }
+
+    return polylinePoints;
+  }
+
   String _calculateDistance(
       double startLat, double startLng, double endLat, double endLng) {
     final distanceInMeters =
         Geolocator.distanceBetween(startLat, startLng, endLat, endLng);
-    final distanceInKm = (distanceInMeters / 1000).toStringAsFixed(2);
-    return '$distanceInKm km';
+    return '${(distanceInMeters / 1000).toStringAsFixed(2)} km';
   }
 
-  // Update city suggestions based on the search query
   void updateCitySuggestions() {
-    if (searchQuery.value.isEmpty) {
-      citySuggestions.clear();
-      return;
-    }
-
-    // Combine both city lists for suggestions
-    final allCities = [...pakistanCities, ...ukCities];
-
-    // Filter cities based on search query
-    citySuggestions.value = allCities
+    citySuggestions.value = availableCities[selectedCountry.value]!
         .where((city) =>
             city.toLowerCase().contains(searchQuery.value.toLowerCase()))
         .toList();
   }
 
-  // Clears the search query
   void clearSearch() {
     searchQuery.value = '';
   }
 
   @override
   void onClose() {
-    // Dispose of the TextEditingController when the controller is removed from memory
     cityName.dispose();
     super.onClose();
   }

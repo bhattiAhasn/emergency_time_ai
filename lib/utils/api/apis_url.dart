@@ -65,5 +65,5 @@ class ApiData {
   //reset password
   static const String logout = "$baseUrl/logout";
 
-  static const String deleteComment = "$baseUrl/comments";
+  static const String countries = "$baseUrl/countrieslist";
 }

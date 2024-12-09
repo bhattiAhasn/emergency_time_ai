@@ -59,6 +59,7 @@ class SignUpScreen extends StatelessWidget
                   }
                   return null;
                 },
+                cursorColor: Colors.black,
               ),
               CommonSpaces.spaceVertical10,
               CommonTextField(
@@ -74,6 +75,7 @@ class SignUpScreen extends StatelessWidget
                   }
                   return null;
                 },
+                cursorColor: Colors.black,
               ),
               CommonSpaces.spaceVertical10,
               Obx(
@@ -102,6 +104,7 @@ class SignUpScreen extends StatelessWidget
                     }
                     return null;
                   },
+                  cursorColor: Colors.black,
                 ),
               ),
               CommonSpaces.spaceVertical10,
@@ -117,6 +120,12 @@ class SignUpScreen extends StatelessWidget
                   inputFormatters: [
                     FilteringTextInputFormatter.deny(RegExp(r"\s")),
                   ],
+                  toggleIcon: secureText.value
+                      ? Icons.visibility_off
+                      : Icons.remove_red_eye,
+                  toggleFunction: () {
+                    secureText.value = !secureText.value;
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'This field is required';
@@ -125,6 +134,7 @@ class SignUpScreen extends StatelessWidget
                     }
                     return null;
                   },
+                  cursorColor: Colors.black,
                 ),
               ),
               CommonSpaces.spaceVertical50,

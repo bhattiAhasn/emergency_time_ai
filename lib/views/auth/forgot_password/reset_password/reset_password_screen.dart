@@ -76,6 +76,7 @@ class ResetPassword extends StatelessWidget
                     }
                     return null;
                   },
+                  cursorColor: Colors.black,
                 ),
               ),
               CommonSpaces.spaceVertical10,
@@ -112,6 +113,7 @@ class ResetPassword extends StatelessWidget
                     }
                     return null;
                   },
+                  cursorColor: Colors.black,
                 ),
               ),
               CommonSpaces.spaceVertical100,

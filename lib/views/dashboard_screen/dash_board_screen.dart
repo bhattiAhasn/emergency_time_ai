@@ -9,6 +9,7 @@ import 'package:emergency_time/views/settings_screen/settings_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 
 import '../../routes/app_routes.dart';
+import '../find_doctors_list/doctors_list_screen.dart';
 import 'local_widgets/drawer.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -19,44 +20,41 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      drawer: const CustomDrawer(),
-      backgroundColor: Colors.white,
-      body: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        children: [
-          const SizedBox(height: 15),
-          _buildHeader(context),
-          const MyText(
-            'Welcome back!',
-            fontWeight: FontWeight.w400,
-            fontSize: 14,
-            color: Color(0xff14BFFF),
-          ),
-          const MyText(
-            'What are you looking for?',
-            fontWeight: FontWeight.w400,
-            fontSize: 24,
-            color: Colors.black,
-          ),
-          const SizedBox(height: 10),
-          _buildSearchField(),
-          _buildCategoryGrid(),
-          const SizedBox(height: 20),
-          const _SectionTitle('Recently Visited Doctors'),
-          _buildRecentlyVisitedDoctors(),
-          const SizedBox(height: 20),
-          buildSpecialistDoctorsSection(),
-          const SizedBox(height: 20),
-          buildOtherServices(),
-          const SizedBox(height: 20),
-          buildLabTestSection(),
-          const SizedBox(height: 20),
-          const _SectionTitle('Health Articles'),
-          buildHealthArticleCard('Benefits of regular health checkup'),
-          buildHealthArticleCard('How to maintain your family’s health'),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        key: scaffoldKey,
+        drawer: const CustomDrawer(),
+        backgroundColor: Colors.white,
+        body: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          children: [
+            const SizedBox(height: 15),
+            _buildHeader(context),
+            const MyText(
+              'Welcome back!',
+              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              color: Color(0xff14BFFF),
+            ),
+            const MyText(
+              'What are you looking for?',
+              fontWeight: FontWeight.w400,
+              fontSize: 24,
+              color: Colors.black,
+            ),
+            const SizedBox(height: 10),
+            _buildSearchField(),
+            _buildCategoryGrid(),
+            const SizedBox(height: 20),
+            const _SectionTitle('Recently Visited Doctors'),
+            _buildRecentlyVisitedDoctors(),
+            const SizedBox(height: 20),
+            buildSpecialistDoctorsSection(),
+            const SizedBox(height: 20),
+            buildOtherServices(),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
@@ -117,18 +115,17 @@ class DashboardScreen extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: [
         InkWell(
-            child: _buildCategoryCard(Image.asset(AppAssets.doctorDashboard)),
-         onTap: (){
-           Get.toNamed(Routes.doctorListingScreen);
-        },),
-        _buildCategoryCard(Image.asset(AppAssets.diagonosticDas)),
+          child: _buildCategoryCard(Image.asset(AppAssets.doctorDashboard)),
+          onTap: () {
+            Get.toNamed(Routes.doctorListingScreen);
+          },
+        ),
         InkWell(
           onTap: () {
             Get.toNamed(Routes.hospitalLocatorScreen);
           },
           child: _buildCategoryCard(Image.asset(AppAssets.searchHospital)),
         ),
-        _buildCategoryCard(Image.asset(AppAssets.orderMedicine)),
         InkWell(
           onTap: () {
             Get.to(() => const ChatBotScreen());
@@ -207,12 +204,17 @@ class DashboardScreen extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
-              const MyText(
-                'view all',
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-                color: Color(0xff14BFFF),
-              ).marginOnly(right: 10),
+              InkWell(
+                onTap: () {
+                  Get.to(() => const FindDoctorsScreen());
+                },
+                child: const MyText(
+                  'view all',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                  color: Color(0xff14BFFF),
+                ).marginOnly(right: 10),
+              ),
             ],
           ),
           const SizedBox(height: 10),
@@ -289,37 +291,6 @@ class DashboardScreen extends StatelessWidget {
           color: Color(0xff8BA6BB),
         ),
       ),
-    );
-  }
-
-  Widget buildLabTestSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const MyText(
-          'Lab Test',
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-        ),
-        const SizedBox(height: 10),
-        InkWell(
-          onTap: () {
-            // Get.toNamed(Routes.labTestScreen);
-          },
-          child: const Card(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: MyText(
-                'Get Lab Test at Home',
-                fontSize: 14,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 

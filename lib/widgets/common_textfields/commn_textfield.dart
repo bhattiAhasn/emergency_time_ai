@@ -31,6 +31,7 @@ class CommonTextField extends StatelessWidget {
   final Color? textColor;
   final bool isInlineBorder;
   final TextAlign align;
+  final Color cursorColor;
 
   const CommonTextField({
     Key? key,
@@ -61,6 +62,7 @@ class CommonTextField extends StatelessWidget {
     this.isInlineBorder = false,
     this.textColor = Colors.black,
     this.align = TextAlign.start,
+    required this.cursorColor,
   }) : super(key: key);
 
   @override
@@ -73,7 +75,7 @@ class CommonTextField extends StatelessWidget {
       data: mqDataNew,
       child: TextFormField(
         textAlign: align,
-        cursorColor: AppColors.white,
+        cursorColor: AppColors.black,
         textAlignVertical: TextAlignVertical.center,
         onChanged: onChanged,
         inputFormatters: inputFormatters,

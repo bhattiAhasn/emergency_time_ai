@@ -1,12 +1,9 @@
 import 'package:emergency_time/constants/app_assets/app_assets.dart';
-import 'package:emergency_time/views/dashboard_screen/dash_board_screen.dart';
-import 'package:emergency_time/views/select_country/select_contry_screen.dart';
 import 'package:emergency_time/widgets/text_widget/text_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../../constants/app_colors/app_colors.dart';
-import '../../../constants/app_strings/app_strings.dart';
 import '../../../controllers/auth/login/login_controller.dart';
 import '../../../mixin_classes/keys_variables_abstract.dart';
 import '../../../mixin_classes/localstorage_abstract.dart';
@@ -64,7 +61,6 @@ class LoginScreen extends StatelessWidget
               CommonTextField(
                 hintText: 'Email',
                 controller: loginController.email,
-                focus: FocusNode(),
                 bordercolor: AppColors.colorC1c1,
                 disableBorderColor: AppColors.colorC1c1,
                 textColor: AppColors.blackColor,
@@ -74,6 +70,7 @@ class LoginScreen extends StatelessWidget
                   }
                   return null;
                 },
+                cursorColor: Colors.black,
               ),
               CommonSpaces.spaceVertical20,
 
@@ -104,6 +101,7 @@ class LoginScreen extends StatelessWidget
                     }
                     return null;
                   },
+                  cursorColor: Colors.black,
                 ),
               ),
               Align(

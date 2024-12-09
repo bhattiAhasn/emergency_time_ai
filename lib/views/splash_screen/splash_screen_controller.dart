@@ -9,9 +9,28 @@ class SplashScreenController extends GetxController {
   void onReady() {
     super.onReady();
     Future.delayed(const Duration(seconds: 3), () {
-      final bool isSkip = storage.read('isSkip') ?? false;
-      final String nextRoute =
-          isSkip ? Routes.loginScreen : Routes.getStartedScreen;
+      print('pakistan>>>>>>${storage.read('pakistan')}');
+      print('united>>>>>>${storage.read('united')}');
+      // Read values from storage
+      final isSkipValue = storage.read('isSkip');
+      final openAppValue = storage.read('isAppOpen');
+
+      // Convert to bool if they are not already booleans
+      final bool isSkip =
+          (isSkipValue is bool) ? isSkipValue : (isSkipValue == 'true');
+      final bool openApp =
+          (openAppValue is bool) ? openAppValue : (openAppValue == 'true');
+
+      // Determine the next route based on the isSkip and openApp values
+      String nextRoute;
+      if (!isSkip) {
+        nextRoute =
+            Routes.getStartedScreen; // Show Get Started screen for new users
+      } else {
+        nextRoute = openApp ? Routes.dashboardScreen : Routes.loginScreen;
+      }
+
+      // Navigate to the determined route
       Get.offNamed(nextRoute);
     });
   }

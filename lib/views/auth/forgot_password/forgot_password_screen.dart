@@ -81,6 +81,7 @@ class ForgotPassword extends StatelessWidget
                     return null;
                   }
                 },
+                cursorColor: Colors.black,
               ),
               CommonSpaces.spaceVertical50,
               CommonButton(

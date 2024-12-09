@@ -6,6 +6,7 @@ import '../../../mixin_classes/localstorage_abstract.dart';
 import '../../../utils/api/apis_url.dart';
 import '../../../utils/libraries/app_libraries.dart';
 import '../../../views/dashboard_screen/dash_board_screen.dart';
+import '../../../views/select_country/select_contry_screen.dart';
 import '../../../widgets/common_toast/common_toast.dart';
 
 class LoginController extends GetxController with InitializeLocalStorage {
@@ -105,6 +106,7 @@ class LoginController extends GetxController with InitializeLocalStorage {
     CommonToast.showToast(AppStrings.loginSuccess);
     print('moderator>>>>>${storage.read('moderator')}');
     // Navigate to Dashboard
-    Get.offAll(() => const DashboardScreen());
+
+    Get.offAll(() => const SelectCountryScreen());
   }
 }
